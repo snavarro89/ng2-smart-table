@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/akveo/ng2-smart-table.svg?branch=master)](https://travis-ci.org/akveo/ng2-smart-table)
+Extension of Akveo's component
 
 # Angular Smart Table Component
 

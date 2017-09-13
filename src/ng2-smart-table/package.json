@@ -1,22 +1,21 @@
 {
-  "name": "ng2-smart-table",
-  "version": "1.2.1",
+  "name": "ng2-smart-table-extended",
+  "version": "1.0.4",
   "description": "Angular Smart Table",
   "main": "./bundles/table.umd.js",
   "module": "./index.js",
   "typings": "./index.d.ts",
-  "author": "akveo",
+  "author": "Joshua Kon",
   "license": "MIT",
   "scripts": {
   },
   "repository": {
     "type": "git",
-    "url": "git+http://akveo.github.io/ng2-smart-table.git"
+    "url": "git+http://github.com/jkon/ng2-smart-table.git"
   },
   "bugs": {
-    "url": "http://akveo.github.io/ng2-smart-table/issues"
+    "url": "http://github.com/jkon/ng2-smart-table/issues"
   },
-  "homepage": "http://akveo.github.io/ng2-smart-table/#readme",
   "keywords": [
     "angular",
     "typescript",

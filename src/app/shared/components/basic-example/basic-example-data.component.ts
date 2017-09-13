@@ -22,6 +22,11 @@ export class BasicExampleDataComponent {
       email: {
         title: 'Email',
       },
+      test: {
+        title: 'test column',
+        editable: false,
+        type: 'html',
+      },
     },
   };
 
@@ -31,24 +36,28 @@ export class BasicExampleDataComponent {
       name: 'Leanne Graham',
       username: 'Bret',
       email: 'Sincere@april.biz',
+      test: '<span> test text</span>',
     },
     {
       id: 2,
       name: 'Ervin Howell',
       username: 'Antonette',
       email: 'Shanna@melissa.tv',
+      test: '<span> test text</span>',
     },
     {
       id: 3,
       name: 'Clementine Bauch',
       username: 'Samantha',
       email: 'Nathan@yesenia.net',
+      test: '<span> test text</span>',
     },
     {
       id: 4,
       name: 'Patricia Lebsack',
       username: 'Karianne',
       email: 'Julianne.OConner@kory.org',
+      test: '<span> test text</span>',
     },
     {
       id: 5,
