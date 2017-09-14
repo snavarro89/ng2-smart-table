@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
 
-@Component({
+@Component( {
   selector: 'basic-example-data',
   template: `
     <ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>
   `,
-})
+} )
 export class BasicExampleDataComponent {
+
+  completerSet = [
+    { name: 'John' },
+    { name: 'Josh' },
+    { name: 'Rachel' },
+    { name: 'David' },
+    { name: 'Joanna' },
+    { name: 'Michael' },
+  ];
 
   settings = {
     columns: {
@@ -14,7 +23,20 @@ export class BasicExampleDataComponent {
         title: 'ID',
       },
       name: {
-        title: 'Full Name',
+        title: 'name',
+        editor: {
+          type: 'completer',
+          config: {
+            completer: {
+              data: this.completerSet,
+              searchFields: 'name',
+              titleField: 'name',
+            },
+          },
+        },
+        isEditableFunction: ( cell ) => {
+          return cell.getColumn().isEditable && cell.isNew;
+        },
       },
       username: {
         title: 'User Name',
@@ -29,6 +51,7 @@ export class BasicExampleDataComponent {
       },
     },
   };
+
 
   data = [
     {

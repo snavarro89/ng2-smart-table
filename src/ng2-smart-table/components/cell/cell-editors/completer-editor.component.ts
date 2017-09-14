@@ -6,13 +6,19 @@ import { DefaultEditor } from './default-editor';
 @Component({
   selector: 'completer-editor',
   template: `
-    <ng2-completer [(ngModel)]="completerStr"
+    <ng2-completer *ngIf="cell.isEditable()" [(ngModel)]="completerStr"
                    [dataService]="cell.getColumn().getConfig().completer.dataService"
                    [minSearchLength]="cell.getColumn().getConfig().completer.minSearchLength || 0"
                    [pause]="cell.getColumn().getConfig().completer.pause || 0"
                    [placeholder]="cell.getColumn().getConfig().completer.placeholder || 'Start typing...'"
                    (selected)="onEditedCompleter($event)">
     </ng2-completer>
+    <!-- just use regular view logic when cell is not editable-->
+    <div *ngIf="!cell.isEditable()" [ngSwitch]="cell.getColumn().type">
+      <custom-view-component *ngSwitchCase="'custom'" [cell]="cell"></custom-view-component>
+      <div *ngSwitchCase="'html'" [innerHTML]="cell.getValue()"></div>
+      <div *ngSwitchDefault>{{ cell.getValue() }}</div>
+    </div>
     `,
 })
 export class CompleterEditorComponent extends DefaultEditor implements OnInit {

@@ -6,8 +6,9 @@ export class Cell {
 
   newValue: any = '';
   protected static PREPARE = (value: any) => value;
+  protected static EDITABLE = ( cell: Cell ) => cell.getColumn().isEditable;
 
-  constructor(protected value: any, protected row: Row, protected column: any, protected dataSet: DataSet) {
+  constructor(protected value: any, protected row: Row, protected column: any, protected dataSet: DataSet, protected isNew: boolean) {
     this.newValue = value;
   }
 
@@ -42,8 +43,9 @@ export class Cell {
       return this.getColumn().isAddable;
     }
     else {
-      return this.getColumn().isEditable;
+      const valid = this.column.getIsEditableFunction() instanceof Function;
+      const isEditableFunc = valid ? this.column.getIsEditableFunction() : Cell.EDITABLE;
+      return isEditableFunc( this );
     }
   }
-
 }

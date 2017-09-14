@@ -9,7 +9,7 @@ export class Row {
   cells: Array<Cell> = [];
 
 
-  constructor(public index: number, protected data: any, protected _dataSet: DataSet) {
+  constructor(public index: number, protected data: any, protected _dataSet: DataSet, protected isNew: boolean) {
     this.process();
   }
 
@@ -51,6 +51,6 @@ export class Row {
   createCell(column: Column): Cell {
     const defValue = (column as any).settings.defaultValue ? (column as any).settings.defaultValue : '';
     const value = typeof this.data[column.id] === 'undefined' ? defValue : this.data[column.id];
-    return new Cell(value, this, column, this._dataSet);
+    return new Cell(value, this, column, this._dataSet, this.isNew);
   }
 }

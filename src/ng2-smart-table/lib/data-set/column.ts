@@ -17,6 +17,7 @@ export class Column {
   renderComponent: any = null;
   compareFunction: Function;
   valuePrepareFunction: Function;
+  isEditableFunction: Function;
   filterFunction: Function;
   onComponentInitFunction: Function;
 
@@ -34,6 +35,10 @@ export class Column {
 
   getValuePrepareFunction(): Function {
     return this.valuePrepareFunction;
+  }
+
+  getIsEditableFunction(): Function {
+    return this.isEditableFunction;
   }
 
   getFilterFunction(): Function {
@@ -71,6 +76,7 @@ export class Column {
 
     this.compareFunction = this.settings['compareFunction'];
     this.valuePrepareFunction = this.settings['valuePrepareFunction'];
+    this.isEditableFunction = this.settings['isEditableFunction'];
     this.filterFunction = this.settings['filterFunction'];
     this.onComponentInitFunction = this.settings['onComponentInitFunction'];
   }

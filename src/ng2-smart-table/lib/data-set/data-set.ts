@@ -119,7 +119,7 @@ export class DataSet {
   }
 
   createNewRow() {
-    this.newRow = new Row(-1, {}, this);
+    this.newRow = new Row(-1, {}, this, true);
     this.newRow.isInEditing = true;
   }
 
@@ -143,7 +143,7 @@ export class DataSet {
   createRows() {
     this.rows = [];
     this.data.forEach((el, index) => {
-      this.rows.push(new Row(index, el, this));
+      this.rows.push(new Row(index, el, this, false));
     });
   }
 }
