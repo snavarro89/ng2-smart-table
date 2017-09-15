@@ -1,20 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { Ng2SmartTableComponent } from '../../../../ng2-smart-table/ng2-smart-table.component';
 
 @Component( {
   selector: 'basic-example-data',
   template: `
-    <ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>
+    <ng2-smart-table #basicTable [settings]="settings" [source]="data" (completed)="onCompleted($event)">
+
+    </ng2-smart-table>
   `,
 } )
 export class BasicExampleDataComponent {
 
+  @ViewChild( Ng2SmartTableComponent ) basicTable: Ng2SmartTableComponent;
+
+  onCompleted( event: any ) {
+    event.row.setData( {
+      id: 'hello',
+      name: event.data.originalObject.name,
+      username: event.data.originalObject.username,
+      email: event.data.originalObject.email,
+    } );
+  }
+
   completerSet = [
-    { name: 'John' },
-    { name: 'Josh' },
-    { name: 'Rachel' },
-    { name: 'David' },
-    { name: 'Joanna' },
-    { name: 'Michael' },
+    { name: 'John', username: 'john', email: 'josh@example.com', test: 'test' },
+    { name: 'Josh', username: 'josh', email: 'john@example.com', test: 'test' },
+    { name: 'Rachel', username: 'Rachel', email: 'rachel@example.com', test: 'test' },
+    { name: 'David', username: 'David', email: 'david@example.com', test: 'test' },
+    { name: 'Joanna', username: 'Joanna', email: 'joanna@example.com', test: 'test' },
+    { name: 'Michael', username: 'Michael', email: 'michael@example.com', test: 'test' },
   ];
 
   settings = {
@@ -35,7 +49,7 @@ export class BasicExampleDataComponent {
           },
         },
         isEditableFunction: ( cell ) => {
-          return cell.getColumn().isEditable && cell.isNew;
+          return cell.getColumn().isEditable;
         },
       },
       username: {

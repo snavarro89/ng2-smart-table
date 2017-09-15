@@ -8,9 +8,10 @@ export class EditCellDefault {
   @Input() inputClass: string = '';
 
   @Output() edited = new EventEmitter<any>();
+  @Output() completed = new EventEmitter<any>();
 
-  onEdited(event: any): boolean {
-    this.edited.next(event);
+  onEdited( event: any ): boolean {
+    this.edited.next( event );
     return false;
   }
 
@@ -19,7 +20,7 @@ export class EditCellDefault {
     return false;
   }
 
-  onClick(event: any) {
+  onClick( event: any ) {
     event.stopPropagation();
   }
 }

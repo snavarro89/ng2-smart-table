@@ -17,7 +17,8 @@ import { Row } from '../../../lib/data-set/row';
                               [createConfirm]="createConfirm"
                               [inputClass]="addInputClass"
                               [isInEditing]="grid.getNewRow().isInEditing"
-                              (edited)="onCreate($event)">
+                              (edited)="onCreate($event)"
+                              (completed)="completed.emit($event)">
         </ng2-smart-table-cell>
       </td>
       <td  *ngIf="showActionColumnRight"  class="ng2-smart-actions">
@@ -32,6 +33,7 @@ export class TheadFormRowComponent implements OnChanges {
   @Input() createConfirm: EventEmitter<any>;
 
   @Output() create = new EventEmitter<any>();
+  @Output() completed = new EventEmitter<any>();
 
   isMultiSelectVisible: boolean;
   showActionColumnLeft: boolean;

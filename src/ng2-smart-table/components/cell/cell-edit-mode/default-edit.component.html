@@ -22,7 +22,8 @@
     </checkbox-editor>
 
     <completer-editor *ngSwitchCase="'completer'"
-                      [cell]="cell">
+                      [cell]="cell"
+                      (completed)="completed.emit($event)">
     </completer-editor>
 
     <input-editor *ngSwitchDefault

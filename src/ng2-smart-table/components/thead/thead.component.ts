@@ -18,6 +18,7 @@ export class Ng2SmartTableTheadComponent implements OnChanges {
     @Output() selectAllRows = new EventEmitter<any>();
     @Output() create = new EventEmitter<any>();
     @Output() filter = new EventEmitter<any>();
+    @Output() completed = new EventEmitter<any>();
 
     isHideHeader: boolean;
     isHideSubHeader: boolean;

@@ -1,5 +1,11 @@
 Extension of Akveo's component
 
+##Features added by this fork
+
+* Show cells as view mode when they are not editable in edit mode
+* Custom function for determining whether cell is editable. Exposes Cell object so you can use data to determine if you want (isEditableFunction)
+* Event emitter for when an auto-complete cell is completed (a choice is made). The event includes the row so you can insert data based on completion chosen (use row.setData()) 
+
 # Angular Smart Table Component
 
 ng2-smart-table component made with :heart:  by [Akveo team](http://akveo.com/). Follow us on [Twitter](https://twitter.com/akveo_inc) to get latest news about this component first!
