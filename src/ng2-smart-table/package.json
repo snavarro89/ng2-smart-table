@@ -11,10 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+http://github.com/jkon/ng2-smart-table.git"
+    "url": "git+https://github.com/jkon/ng2-smart-table.git"
   },
   "bugs": {
-    "url": "http://github.com/jkon/ng2-smart-table/issues"
+    "url": "https://github.com/jkon/ng2-smart-table/issues"
   },
   "keywords": [
     "angular",
