@@ -97,6 +97,14 @@
       </td>
     </tr>
     <tr>
+      <td>isEditableFunction</td>
+      <td><span class="highlight">Function</span></td>
+      <td>null</td>
+      <td>
+        Function to determine if this column is editable or not. Cell object is passed to function
+      </td>
+    </tr>
+    <tr>
       <td>type</td>
       <td><span class="highlight">'text'</span>|<span class="highlight">'html'</span>|<span class="highlight">'custom'</span></td>
       <td>'text'</td>
@@ -699,6 +707,19 @@
       <td>
         Triggered once a Delete button clicked. Triggered only if table <strong>confirmDelete = true and mode = inline</strong>.
         Allows you to confirm changes before they are applied to the table data source.
+      </td>
+    </tr>
+    <tr>
+      <td>(completed)</td>
+      <td>
+        event: <span class="highlight">Object</span>, consist of:
+        <ul>
+          <li>data: <span class="highlight">Object</span> - object with Completer data (originalObject has data from completer data source)</li>
+          <li>row: <span class="highlight">Row</span> - Row data</li>
+        </ul>
+      </td>
+      <td>
+        Triggered once an auto complete choice is clicked.
       </td>
     </tr>
   </table>
