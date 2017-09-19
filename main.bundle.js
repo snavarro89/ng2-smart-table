@@ -253,9 +253,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 let BasicExampleDataComponent = class BasicExampleDataComponent {
     constructor() {
-        /*onCustom( event: any ) {
-          console.log( event );
-        }*/
+        // onCustom( event: any ) {
+        //   console.log( event );
+        // }
         this.completerSet = [
             { name: 'John', username: 'john', email: 'josh@example.com', test: 'test' },
             { name: 'Josh', username: 'josh', email: 'john@example.com', test: 'test' },
@@ -2369,6 +2369,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 let TbodyCustomComponent = class TbodyCustomComponent {
     constructor() {
         this.custom = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
+        this.selectedItem = {};
+    }
+    ngAfterContentInit() {
+        // console.log( 'setting up select action default values');
+        const customActions = this.grid.getSetting('actions.custom');
+        if (customActions && customActions.length > 0) {
+            customActions.forEach((a) => {
+                if (a.defaultSelection) {
+                    this.selectedItem[a.name] = a.defaultSelection.value;
+                }
+            });
+        }
     }
     onSelect(action) {
         event.preventDefault();
@@ -2377,7 +2389,7 @@ let TbodyCustomComponent = class TbodyCustomComponent {
             action: action,
             data: this.row.getData(),
             source: this.source,
-            selectedItem: this.selectedItem,
+            selectedItem: this.selectedItem[action.name],
         });
     }
     onCustom(action, event) {
@@ -2414,7 +2426,7 @@ TbodyCustomComponent = __decorate([
     <div *ngFor="let action of grid.getSetting('actions.custom')" [ngSwitch]="action.type">
       <div *ngSwitchCase="'select'"
            class="ng2-smart-action ng2-smart-action-custom-custom">
-        <select [(ngModel)]="selectedItem" (change)="onSelect(action)">
+        <select [(ngModel)]="selectedItem[action.name]" required (change)="onSelect(action)">
           <option *ngFor="let item of action.optionItems" [ngValue]="item.value">{{item.description}}</option>
         </select>
       </div>
