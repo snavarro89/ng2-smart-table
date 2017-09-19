@@ -262,6 +262,22 @@ let BasicExampleDataComponent = class BasicExampleDataComponent {
             { name: 'Michael', username: 'Michael', email: 'michael@example.com', test: 'test' },
         ];
         this.settings = {
+            actions: {
+                add: true,
+                edit: true,
+                'delete': true,
+                custom: [
+                    {
+                        name: 'custom',
+                        title: 'custom action',
+                        optionItems: [
+                            { value: 1, description: '1' },
+                            { value: 2, description: '2' },
+                        ],
+                        type: 'select',
+                    },
+                ],
+            },
             columns: {
                 id: {
                     title: 'ID',
@@ -376,6 +392,9 @@ let BasicExampleDataComponent = class BasicExampleDataComponent {
             email: event.data.originalObject.email,
         });
     }
+    onCustom(event) {
+        console.log(event);
+    }
 };
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1__ng2_smart_table_ng2_smart_table_component__["a" /* Ng2SmartTableComponent */]),
@@ -385,7 +404,11 @@ BasicExampleDataComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Component */])({
         selector: 'basic-example-data',
         template: `
-    <ng2-smart-table #basicTable [settings]="settings" [source]="data" (completed)="onCompleted($event)">
+    <ng2-smart-table #basicTable
+                     [settings]="settings"
+                     [source]="data"
+                     (completed)="onCompleted($event)"
+                     (custom)="onCustom($event)">
 
     </ng2-smart-table>
   `,
@@ -2358,13 +2381,23 @@ let TbodyCustomComponent = class TbodyCustomComponent {
     constructor() {
         this.custom = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
     }
+    onSelect(action) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.custom.emit({
+            action: action,
+            data: this.row.getData(),
+            source: this.source,
+            selectedItem: this.selectedItem,
+        });
+    }
     onCustom(action, event) {
         event.preventDefault();
         event.stopPropagation();
         this.custom.emit({
-            action: action.name,
+            action: action,
             data: this.row.getData(),
-            source: this.source
+            source: this.source,
         });
     }
 };
@@ -2389,11 +2422,20 @@ TbodyCustomComponent = __decorate([
         selector: 'ng2-st-tbody-custom',
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* ChangeDetectionStrategy */].OnPush,
         template: `
-      <a *ngFor="let action of grid.getSetting('actions.custom')" href="#"
-         class="ng2-smart-action ng2-smart-action-custom-custom" 
+    <div *ngFor="let action of grid.getSetting('actions.custom')" [ngSwitch]="action.type">
+      <div *ngSwitchCase="'select'"
+           class="ng2-smart-action ng2-smart-action-custom-custom">
+        <select [(ngModel)]="selectedItem" (change)="onSelect(action)">
+          <option *ngFor="let item of action.optionItems" [ngValue]="item.value">{{item.description}}</option>
+        </select>
+      </div>
+      <a *ngSwitchDefault
          [innerHTML]="action.title"
+         class="ng2-smart-action ng2-smart-action-custom-custom"
+         href="#"
          (click)="onCustom(action, $event)"></a>
-        `
+    </div>
+  `,
     })
 ], TbodyCustomComponent);
 
