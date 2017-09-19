@@ -409,6 +409,28 @@
       </td>
     </tr>
     <tr>
+      <td>actions.custom</td>
+      <td><span class="highlight">Array of Objects</span></td>
+      <td>null</td>
+      <td>
+        Add custom actions. Each object has these properties:
+        <ul>
+          <li>name: <span class="highlight">string</span></li>
+          <li>title: <span class="highlight">string</span></li>
+          <li>[type]: <span class="highlight">string</span></li>
+          <li>
+            [optionItems]: <span class="highlight">Array of Objects</span> with properties:
+            <ul>
+              <li>value:<span class="highlight">string</span></li>
+              <li>description: <span class="highlight">string</span></li>
+            </ul>
+          </li>
+        </ul>
+        Currently only two types of custom actions, 'default || null' and 'select'. Use optionItems with select type.
+        (custom) event will be emitted on click of default action and selection for select action
+      </td>
+    </tr>
+    <tr>
       <td>filter</td>
       <td><span class="highlight">Object</span></td>
       <td>n/a</td>
@@ -720,6 +742,21 @@
       </td>
       <td>
         Triggered once an auto complete choice is clicked.
+      </td>
+    </tr>
+    <tr>
+      <td>(custom)</td>
+      <td>
+        event: <span class="highlight">Object</span>, consist of:
+        <ul>
+          <li>action: <span class="highlight">Object</span> - object with action properties</li>
+          <li>data: <span class="highlight">Object</span> - object with row data</li>
+          <li>source: <span class="highlight">Row</span> - source data</li>
+          <li>selectedItem: <span class="highlight">Any</span> - selected option value</li>
+        </ul>
+      </td>
+      <td>
+        Triggered when a custom action is clicked or selected.
       </td>
     </tr>
   </table>

@@ -1,12 +1,13 @@
 {
   "name": "ng2-smart-table-extended",
-  "version": "1.0.6",
-  "description": "Angular Smart Table",
+  "version": "1.0.7",
+  "description": "Angular Smart Table Extended Version",
   "main": "./bundles/table.umd.js",
   "module": "./index.js",
   "typings": "./index.d.ts",
   "author": "Joshua Kon",
   "license": "MIT",
+  "homepage": "https://jkon.github.io/ng2-smart-table/",
   "scripts": {
   },
   "repository": {
@@ -19,8 +20,7 @@
   "keywords": [
     "angular",
     "typescript",
-    "table",
-    "akveo"
+    "table"
   ],
   "dependencies": {
     "lodash": "^4.17.4",
