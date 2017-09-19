@@ -7,8 +7,8 @@ import { Ng2SmartTableComponent } from '../../../../ng2-smart-table/ng2-smart-ta
     <ng2-smart-table #basicTable
                      [settings]="settings"
                      [source]="data"
-                     (completed)="onCompleted($event)"
-                     (custom)="onCustom($event)">
+                     (completed)="onCompleted($event)">
+                     <!--(custom)="onCustom($event)">-->
 
     </ng2-smart-table>
   `,
@@ -26,9 +26,9 @@ export class BasicExampleDataComponent {
     } );
   }
 
-  onCustom( event: any ) {
+  /*onCustom( event: any ) {
     console.log( event );
-  }
+  }*/
 
   completerSet = [
     { name: 'John', username: 'john', email: 'josh@example.com', test: 'test' },
@@ -44,7 +44,7 @@ export class BasicExampleDataComponent {
       add: true,
       edit: true,
       'delete': true,
-      custom: [
+      /*custom: [
         {
           name: 'custom',
           title: 'custom action',
@@ -54,7 +54,7 @@ export class BasicExampleDataComponent {
           ],
           type: 'select',
         },
-      ],
+      ],*/
     },
     columns: {
       id: {
