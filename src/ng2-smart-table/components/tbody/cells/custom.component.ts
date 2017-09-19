@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterContentInit, AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input,
+  Output,
+} from '@angular/core';
 import { Row } from '../../../lib/data-set/row';
 
 import { Grid } from '../../../lib/grid';
@@ -10,7 +13,7 @@ import { Grid } from '../../../lib/grid';
     <div *ngFor="let action of grid.getSetting('actions.custom')" [ngSwitch]="action.type">
       <div *ngSwitchCase="'select'"
            class="ng2-smart-action ng2-smart-action-custom-custom">
-        <select [(ngModel)]="selectedItem" (change)="onSelect(action)">
+        <select [(ngModel)]="selectedItem[action.name]" required (change)="onSelect(action)">
           <option *ngFor="let item of action.optionItems" [ngValue]="item.value">{{item.description}}</option>
         </select>
       </div>
@@ -22,14 +25,25 @@ import { Grid } from '../../../lib/grid';
     </div>
   `,
 } )
-export class TbodyCustomComponent {
+export class TbodyCustomComponent implements AfterContentInit {
+  ngAfterContentInit(): void {
+    // console.log( 'setting up select action default values');
+    const customActions = this.grid.getSetting( 'actions.custom' );
+    if ( customActions && customActions.length > 0 ) {
+      customActions.forEach( ( a: any ) => {
+        if ( a.defaultSelection ) {
+          this.selectedItem[a.name] = a.defaultSelection.value;
+        }
+      } );
+    }
+  }
 
   @Input() grid: Grid;
   @Input() row: Row;
   @Input() source: any;
   @Output() custom = new EventEmitter<any>();
 
-  selectedItem: any;
+  selectedItem: any = {};
 
   onSelect( action: any ) {
     event.preventDefault();
@@ -39,7 +53,7 @@ export class TbodyCustomComponent {
       action: action,
       data: this.row.getData(),
       source: this.source,
-      selectedItem: this.selectedItem,
+      selectedItem: this.selectedItem[action.name],
     } );
   }
 

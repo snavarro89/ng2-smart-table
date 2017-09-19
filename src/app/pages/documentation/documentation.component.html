@@ -46,11 +46,7 @@
         Table column settings, by default an empty object.<br>
         Example format:<br>
         <code>
-          columns: {{ '{' }}
-            <b>columnKey</b>: {{ '{' }}
-              title: 'Some Title'
-            {{ '}' }}
-          {{ '}' }}
+          columns: {{ "{ columnKey: { title: 'Some Title' }  '}" }}
         </code>
         <br>
         Please note, <b>columnKey</b> must be the same as a key in data array objects.
@@ -180,7 +176,7 @@
       <td>[ ]</td>
       <td>
         Only on <span class="highlight">list</span> type. Example format:<br>
-        <code>{{ '{' }} value: 'Element Value', title: 'Element Title' {{ '}' }}</code><br>
+        <code>{{ "{  value: 'Element Value', title: 'Element Title'  }" }}</code><br>
         Html is supported if column type is <span class="highlight">'html'</span>
       </td>
     </tr>
@@ -200,7 +196,7 @@
       <td>
         Autocomplete list data source.<br>
         Example format:<br>
-        <code>{{ '{' }} id: 10, name: 'Nick', email: 'rey@karina.biz' {{ '}' }}</code>
+        <code>{{ "{ id: 10, name: 'Nick', email: 'rey@karina.biz' }" }}</code>
       </td>
     </tr>
     <tr>
@@ -420,6 +416,13 @@
           <li>[type]: <span class="highlight">string</span></li>
           <li>
             [optionItems]: <span class="highlight">Array of Objects</span> with properties:
+            <ul>
+              <li>value:<span class="highlight">string</span></li>
+              <li>description: <span class="highlight">string</span></li>
+            </ul>
+          </li>
+          <li>
+            [defaultSelection]: <span class="highlight">Object</span>
             <ul>
               <li>value:<span class="highlight">string</span></li>
               <li>description: <span class="highlight">string</span></li>
@@ -756,7 +759,7 @@
         </ul>
       </td>
       <td>
-        Triggered when a custom action is clicked or selected.
+        Triggered when a custom action is clicked or selected
       </td>
     </tr>
   </table>
@@ -882,7 +885,7 @@
         </ul>
       <td>
         Set table sorts, example: <br>
-        <code>this.source.setSort([{{ '{' }} field: 'id', direction: 'asc' {{ '}' }}]);</code>
+        <code>this.source.setSort([{{ "{ field: 'id', direction: 'asc' }" }}]);</code>
       </td>
     </tr>
     <tr>
@@ -906,7 +909,7 @@
         </ul>
       <td>
         Set table filters, example: <br>
-        <code>this.source.setFilter([{{ '{' }} field: 'id', search: 'foobar' {{ '}' }}, {{ '{' }} field: 'name', search: 'foobar' {{ '}' }}]);</code>
+        <code>this.source.setFilter([{{ "{ field: 'id', search: 'foobar' }" }}, {{ "{ field: 'name', search: 'foobar' }" }}]);</code>
       </td>
     </tr>
     <tr>
@@ -930,7 +933,7 @@
         </ul>
       <td>
         Set table filter for one column, example: <br>
-        <code>this.source.addFilter({{ '{' }} field: 'id', search: 'foobar' {{ '}' }});</code>
+        <code>this.source.addFilter({{ "{ field: 'id', search: 'foobar' }" }});</code>
       </td>
     </tr>
     <tr>

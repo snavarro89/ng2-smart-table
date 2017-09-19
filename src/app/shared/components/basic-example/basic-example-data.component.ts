@@ -26,9 +26,9 @@ export class BasicExampleDataComponent {
     } );
   }
 
-  /*onCustom( event: any ) {
-    console.log( event );
-  }*/
+  // onCustom( event: any ) {
+  //   console.log( event );
+  // }
 
   completerSet = [
     { name: 'John', username: 'john', email: 'josh@example.com', test: 'test' },
@@ -44,17 +44,18 @@ export class BasicExampleDataComponent {
       add: true,
       edit: true,
       'delete': true,
-      /*custom: [
-        {
-          name: 'custom',
-          title: 'custom action',
-          optionItems: [
-            { value: 1, description: '1' },
-            { value: 2, description: '2' },
-          ],
-          type: 'select',
-        },
-      ],*/
+      // custom: [
+      //   {
+      //     name: 'custom',
+      //     title: 'custom action',
+      //     optionItems: [
+      //       { value: 1, description: '1' },
+      //       { value: 2, description: '2' },
+      //     ],
+      //     type: 'select',
+      //     defaultSelection: { value: 1, description: '1' },
+      //   },
+      // ],
     },
     columns: {
       id: {

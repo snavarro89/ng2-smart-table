@@ -4,7 +4,8 @@ Extension of Akveo's component
 
 * Show cells as view mode when they are not editable in edit mode
 * Custom function for determining whether cell is editable. Exposes Cell object so you can use data to determine if you want (isEditableFunction)
-* Event emitter for when an auto-complete cell is completed (a choice is made). The event includes the row so you can insert data based on completion chosen (use row.setData()) 
+* Event emitter for when an auto-complete cell is completed (a choice is made). The event includes the row so you can insert data based on completion chosen (use row.setData())
+* Custom select actions 
 
 
 ### Demo
