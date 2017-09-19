@@ -471,7 +471,7 @@ BasicExampleComponent = __decorate([
 /***/ "../../../../../src/app/shared/components/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"page-header internal\">\n  <h1 class=\"project-name\"><a routerLink=\"/\">ng2-smart-table</a></h1>\n  <h2 class=\"project-tagline\">{{ tagline }}</h2>\n\n  <a routerLinkActive=\"active\" routerLink=\"/demo\" class=\"btn\">Quick Start</a>\n  <a routerLinkActive=\"active\" routerLink=\"/examples\" class=\"btn\">Examples</a>\n  <a routerLinkActive=\"active\" routerLink=\"/documentation\" class=\"btn\">Documentation</a>\n  <a target=\"_blank\" href=\"https://github.com/akveo/ng2-smart-table\" class=\"btn\">View on GitHub</a>\n</section>"
+module.exports = "<section class=\"page-header internal\">\n  <h1 class=\"project-name\"><a routerLink=\"/\">ng2-smart-table-extended</a></h1>\n  <h2 class=\"project-tagline\">{{ tagline }}</h2>\n\n  <a routerLinkActive=\"active\" routerLink=\"/demo\" class=\"btn\">Quick Start</a>\n  <a routerLinkActive=\"active\" routerLink=\"/examples\" class=\"btn\">Examples</a>\n  <a routerLinkActive=\"active\" routerLink=\"/documentation\" class=\"btn\">Documentation</a>\n  <a target=\"_blank\" href=\"https://github.com/jkon/ng2-smart-table\" class=\"btn\">View on GitHub</a>\n</section>\n"
 
 /***/ }),
 

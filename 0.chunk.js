@@ -1753,7 +1753,7 @@ module.exports = "import { Component } from '@angular/core';\n\n@Component({\n  
 /***/ "../../../../raw-loader/index.js!../../../../../src/app/pages/examples/snippets/source-require.md":
 /***/ (function(module, exports) {
 
-module.exports = "import { Ng2SmartTableModule, LocalDataSource } from 'ng2-smart-table';"
+module.exports = "import { Ng2SmartTableModule, LocalDataSource } from 'ng2-smart-table-extended';\n"
 
 /***/ }),
 

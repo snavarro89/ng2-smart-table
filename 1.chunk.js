@@ -140,14 +140,14 @@ module.exports = "// ...\n\n@NgModule({\n  imports: [\n    // ...\n    \n    Ng2
 /***/ "../../../../raw-loader/index.js!../../../../../src/app/pages/demo/snippets/install.md":
 /***/ (function(module, exports) {
 
-module.exports = "npm install --save ng2-smart-table"
+module.exports = "npm install --save ng2-smart-table-extended\n"
 
 /***/ }),
 
 /***/ "../../../../raw-loader/index.js!../../../../../src/app/pages/demo/snippets/require.md":
 /***/ (function(module, exports) {
 
-module.exports = "import { Ng2SmartTableModule } from 'ng2-smart-table';"
+module.exports = "import { Ng2SmartTableModule } from 'ng2-smart-table-extended';\n"
 
 /***/ }),
 
