@@ -9,7 +9,8 @@
                       (selectAllRows)="onSelectAllRows($event)"
                       (sort)="sort($event)"
                       (filter)="filter($event)"
-                      (completed)="completed.emit($event)">
+                      (completed)="completed.emit($event)"
+                      (custom)="custom.emit($event)">
   </thead>
 
   <tbody ng2-st-tbody [grid]="grid"

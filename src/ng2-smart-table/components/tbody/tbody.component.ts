@@ -39,6 +39,8 @@ export class Ng2SmartTableTbodyComponent {
   isActionEdit: boolean;
   isActionDelete: boolean;
   noDataMessage: boolean;
+  showUpdateCancel: boolean;
+  showCustomDuringEdit: boolean;
 
   ngOnChanges() {
     this.isMultiSelectVisible = this.grid.isMultiSelectVisible();
@@ -50,5 +52,7 @@ export class Ng2SmartTableTbodyComponent {
     this.isActionEdit = this.grid.getSetting( 'actions.edit' );
     this.isActionDelete = this.grid.getSetting( 'actions.delete' );
     this.noDataMessage = this.grid.getSetting( 'noDataMessage' );
+    this.showUpdateCancel = this.grid.getSetting( 'actions.showUpdateCancel' );
+    this.showCustomDuringEdit = this.grid.getSetting( 'actions.showCustomDuringEdit' );
   }
 }

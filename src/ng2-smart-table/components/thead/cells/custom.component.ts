@@ -7,7 +7,7 @@ import { Row } from '../../../lib/data-set/row';
 import { Grid } from '../../../lib/grid';
 
 @Component( {
-  selector: 'ng2-st-tbody-custom',
+  selector: 'ng2-st-thead-custom',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div *ngFor="let action of grid.getSetting('actions.custom')" [ngSwitch]="action.type">
@@ -25,7 +25,7 @@ import { Grid } from '../../../lib/grid';
     </div>
   `,
 } )
-export class TbodyCustomComponent implements AfterContentInit {
+export class TheadCustomComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     // console.log( 'setting up select action default values');
     const customActions = this.grid.getSetting( 'actions.custom' );

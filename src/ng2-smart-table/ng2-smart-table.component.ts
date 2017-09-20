@@ -46,9 +46,12 @@ export class Ng2SmartTableComponent implements OnChanges {
       columnTitle: 'Actions',
       add: true,
       edit: true,
-      delete: true,
+      'delete': true,
       custom: [],
       position: 'left', // left|right
+      showUpdateCancel: true,
+      showCustomDuringEdit: false,
+      showCustomInForm: false,
     },
     filter: {
       inputClass: '',

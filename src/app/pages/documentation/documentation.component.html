@@ -434,6 +434,33 @@
       </td>
     </tr>
     <tr>
+      <td>actions.showUpdateCancel</td>
+      <td><span class="highlight">boolean</span></td>
+      <td>true</td>
+      <td>
+        Show Update and Cancel buttons in actions column while row is in editing.
+      </td>
+    </tr>
+    <tr>
+      <td>actions.showCustomDuringEdit</td>
+      <td><span class="highlight">boolean</span></td>
+      <td>false</td>
+      <td>
+        Show custom action components while row is in editing. To keep select value chosen in custom select action during editing, use the (custom) event to set the matching field in the row data. Example:
+        <code>
+          {{ "onCustom(event: any) { event.data[event.action.name] = event.selectedItem; }" }}
+      </code>
+      </td>
+    </tr>
+    <tr>
+      <td>actions.showCustomInForm</td>
+      <td><span class="highlight">boolean</span></td>
+      <td>false</td>
+      <td>
+        Show custom action components in new row form
+      </td>
+    </tr>
+    <tr>
       <td>filter</td>
       <td><span class="highlight">Object</span></td>
       <td>n/a</td>
