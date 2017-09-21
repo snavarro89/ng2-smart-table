@@ -46,6 +46,13 @@ export class BasicExampleDataComponent {
   ];
 
   settings = {
+    cellClassFunction: (cell) => {
+      if ( cell.getColumn().id === 'name' ) {
+        return 'name-column';
+      } else {
+        return 'other-column';
+      }
+    },
     actions: {
       add: true,
       edit: true,
