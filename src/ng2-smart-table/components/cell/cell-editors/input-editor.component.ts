@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 import { DefaultEditor } from './default-editor';
 
@@ -14,7 +14,8 @@ import { DefaultEditor } from './default-editor';
            [disabled]="!cell.isEditable()"
            (click)="onClick.emit($event)"
            (keydown.enter)="onEdited.emit($event)"
-           (keydown.esc)="onStopEditing.emit()">
+           (keydown.esc)="onStopEditing.emit()"
+           (change)="onChange.emit($event)">
     <!-- just use regular view logic when cell is not editable-->
     <div *ngIf="!cell.isEditable()" [ngSwitch]="cell.getColumn().type">
       <custom-view-component *ngSwitchCase="'custom'" [cell]="cell"></custom-view-component>
@@ -24,6 +25,8 @@ import { DefaultEditor } from './default-editor';
   `,
 } )
 export class InputEditorComponent extends DefaultEditor {
+
+  @Output() onChange = new EventEmitter<any>();
 
   constructor() {
     super();

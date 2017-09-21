@@ -15,7 +15,8 @@ import { Cell } from '../../../lib/data-set/cell';
                                  [cell]="cell"
                                  [inputClass]="inputClass"
                                  (edited)="onEdited($event)"
-                                 (completed)="completed.emit($event)">
+                                 (completed)="completed.emit($event)"
+                                 (changed)="changed.emit($event)">
       </table-cell-default-editor>
     </div>
   `,
@@ -27,7 +28,7 @@ export class EditCellComponent {
 
   @Output() completed = new EventEmitter<any>();
   @Output() edited = new EventEmitter<any>();
-
+  @Output() changed = new EventEmitter<any>();
   onEdited( event: any ): boolean {
     this.edited.next( event );
     return false;

@@ -11,7 +11,8 @@ import { Row } from '../../lib/data-set/row';
     <table-cell-edit-mode *ngIf="isInEditing" [cell]="cell"
                           [inputClass]="inputClass"
                           (edited)="onEdited($event)"
-                          (completed)="completed.emit($event)">
+                          (completed)="completed.emit($event)"
+                          (changed)="changed.emit($event)">
     </table-cell-edit-mode>
   `,
 } )
@@ -29,6 +30,7 @@ export class CellComponent {
 
   @Output() completed = new EventEmitter<any>();
   @Output() edited = new EventEmitter<any>();
+  @Output() changed = new EventEmitter<any>();
 
   onEdited( event: any ) {
     if ( this.isNew ) {

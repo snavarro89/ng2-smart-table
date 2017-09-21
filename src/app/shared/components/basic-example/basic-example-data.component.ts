@@ -7,7 +7,8 @@ import { Ng2SmartTableComponent } from '../../../../ng2-smart-table/ng2-smart-ta
     <ng2-smart-table #basicTable
                      [settings]="settings"
                      [source]="data"
-                     (completed)="onCompleted($event)">
+                     (completed)="onCompleted($event)"
+                     (changed)="onChange($event)">
                      <!--(custom)="onCustom($event)">-->
 
     </ng2-smart-table>
@@ -24,6 +25,10 @@ export class BasicExampleDataComponent {
       username: event.data.originalObject.username,
       email: event.data.originalObject.email,
     } );
+  }
+
+  onChange( event: any ) {
+    console.log( event );
   }
 
 /*  onCustom( event: any ) {
