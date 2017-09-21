@@ -385,6 +385,9 @@ let BasicExampleDataComponent = class BasicExampleDataComponent {
             email: event.data.originalObject.email,
         });
     }
+    onChange(event) {
+        console.log(event);
+    }
 };
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1__ng2_smart_table_ng2_smart_table_component__["a" /* Ng2SmartTableComponent */]),
@@ -397,7 +400,8 @@ BasicExampleDataComponent = __decorate([
     <ng2-smart-table #basicTable
                      [settings]="settings"
                      [source]="data"
-                     (completed)="onCompleted($event)">
+                     (completed)="onCompleted($event)"
+                     (changed)="onChange($event)">
                      <!--(custom)="onCustom($event)">-->
 
     </ng2-smart-table>
@@ -759,7 +763,7 @@ var _a;
 /***/ "../../../../../src/ng2-smart-table/components/cell/cell-edit-mode/default-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div [ngSwitch]=\"getEditorType()\">\n    <select-editor *ngSwitchCase=\"'list'\"\n                   [cell]=\"cell\"\n                   [inputClass]=\"inputClass\"\n                   (onClick)=\"onClick($event)\"\n                   (onEdited)=\"onEdited($event)\"\n                   (onStopEditing)=\"onStopEditing()\">\n    </select-editor>\n\n    <textarea-editor *ngSwitchCase=\"'textarea'\"\n                     [cell]=\"cell\"\n                     [inputClass]=\"inputClass\"\n                     (onClick)=\"onClick($event)\"\n                     (onEdited)=\"onEdited($event)\"\n                     (onStopEditing)=\"onStopEditing()\">\n    </textarea-editor>\n\n    <checkbox-editor *ngSwitchCase=\"'checkbox'\"\n                     [cell]=\"cell\"\n                     [inputClass]=\"inputClass\"\n                     (onClick)=\"onClick($event)\">\n    </checkbox-editor>\n\n    <completer-editor *ngSwitchCase=\"'completer'\"\n                      [cell]=\"cell\"\n                      (completed)=\"completed.emit($event)\">\n    </completer-editor>\n\n    <input-editor *ngSwitchDefault\n                  [cell]=\"cell\"\n                  [inputClass]=\"inputClass\"\n                  (onClick)=\"onClick($event)\"\n                  (onEdited)=\"onEdited($event)\"\n                  (onStopEditing)=\"onStopEditing()\">\n    </input-editor>\n</div>\n"
+module.exports = "<div [ngSwitch]=\"getEditorType()\">\n    <select-editor *ngSwitchCase=\"'list'\"\n                   [cell]=\"cell\"\n                   [inputClass]=\"inputClass\"\n                   (onClick)=\"onClick($event)\"\n                   (onEdited)=\"onEdited($event)\"\n                   (onStopEditing)=\"onStopEditing()\">\n    </select-editor>\n\n    <textarea-editor *ngSwitchCase=\"'textarea'\"\n                     [cell]=\"cell\"\n                     [inputClass]=\"inputClass\"\n                     (onClick)=\"onClick($event)\"\n                     (onEdited)=\"onEdited($event)\"\n                     (onStopEditing)=\"onStopEditing()\">\n    </textarea-editor>\n\n    <checkbox-editor *ngSwitchCase=\"'checkbox'\"\n                     [cell]=\"cell\"\n                     [inputClass]=\"inputClass\"\n                     (onClick)=\"onClick($event)\">\n    </checkbox-editor>\n\n    <completer-editor *ngSwitchCase=\"'completer'\"\n                      [cell]=\"cell\"\n                      (completed)=\"completed.emit($event)\">\n    </completer-editor>\n\n    <input-editor *ngSwitchDefault\n                  [cell]=\"cell\"\n                  [inputClass]=\"inputClass\"\n                  (onClick)=\"onClick($event)\"\n                  (onEdited)=\"onEdited($event)\"\n                  (onStopEditing)=\"onStopEditing()\"\n                  (onChange)=\"onChange($event)\">\n    </input-editor>\n</div>\n"
 
 /***/ }),
 
@@ -823,6 +827,7 @@ class EditCellDefault {
         this.inputClass = '';
         this.edited = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.completed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
+        this.changed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
     }
     onEdited(event) {
         this.edited.next(event);
@@ -834,6 +839,11 @@ class EditCellDefault {
     }
     onClick(event) {
         event.stopPropagation();
+    }
+    onChange(event) {
+        event.stopPropagation();
+        event.cell = this.cell;
+        this.changed.emit(event);
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = EditCellDefault;
@@ -854,6 +864,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
     __metadata("design:type", Object)
 ], EditCellDefault.prototype, "completed", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
+    __metadata("design:type", Object)
+], EditCellDefault.prototype, "changed", void 0);
 var _a;
 //# sourceMappingURL=edit-cell-default.js.map
 
@@ -882,6 +896,7 @@ let EditCellComponent = class EditCellComponent {
         this.inputClass = '';
         this.completed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.edited = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
+        this.changed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
     }
     onEdited(event) {
         this.edited.next(event);
@@ -907,6 +922,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
     __metadata("design:type", Object)
 ], EditCellComponent.prototype, "edited", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
+    __metadata("design:type", Object)
+], EditCellComponent.prototype, "changed", void 0);
 EditCellComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Component */])({
         selector: 'table-cell-edit-mode',
@@ -921,7 +940,8 @@ EditCellComponent = __decorate([
                                  [cell]="cell"
                                  [inputClass]="inputClass"
                                  (edited)="onEdited($event)"
-                                 (completed)="completed.emit($event)">
+                                 (completed)="completed.emit($event)"
+                                 (changed)="changed.emit($event)">
       </table-cell-default-editor>
     </div>
   `,
@@ -1144,8 +1164,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 let InputEditorComponent = class InputEditorComponent extends __WEBPACK_IMPORTED_MODULE_1__default_editor__["a" /* DefaultEditor */] {
     constructor() {
         super();
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
     }
 };
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
+    __metadata("design:type", Object)
+], InputEditorComponent.prototype, "onChange", void 0);
 InputEditorComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Component */])({
         selector: 'input-editor',
@@ -1159,7 +1184,8 @@ InputEditorComponent = __decorate([
            [disabled]="!cell.isEditable()"
            (click)="onClick.emit($event)"
            (keydown.enter)="onEdited.emit($event)"
-           (keydown.esc)="onStopEditing.emit()">
+           (keydown.esc)="onStopEditing.emit()"
+           (change)="onChange.emit($event)">
     <!-- just use regular view logic when cell is not editable-->
     <div *ngIf="!cell.isEditable()" [ngSwitch]="cell.getColumn().type">
       <custom-view-component *ngSwitchCase="'custom'" [cell]="cell"></custom-view-component>
@@ -1425,6 +1451,7 @@ let CellComponent = class CellComponent {
         this.isInEditing = false;
         this.completed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.edited = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
+        this.changed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
     }
     onEdited(event) {
         if (this.isNew) {
@@ -1479,6 +1506,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
     __metadata("design:type", Object)
 ], CellComponent.prototype, "edited", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
+    __metadata("design:type", Object)
+], CellComponent.prototype, "changed", void 0);
 CellComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Component */])({
         selector: 'ng2-smart-table-cell',
@@ -1487,7 +1518,8 @@ CellComponent = __decorate([
     <table-cell-edit-mode *ngIf="isInEditing" [cell]="cell"
                           [inputClass]="inputClass"
                           (edited)="onEdited($event)"
-                          (completed)="completed.emit($event)">
+                          (completed)="completed.emit($event)"
+                          (changed)="changed.emit($event)">
     </table-cell-edit-mode>
   `,
     })
@@ -2561,7 +2593,7 @@ var _a, _b, _c, _d, _e;
 /***/ "../../../../../src/ng2-smart-table/components/tbody/tbody.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<tr *ngFor=\"let row of grid.getRows()\" (click)=\"userSelectRow.emit(row)\" (mouseover)=\"rowHover.emit(row)\" class=\"ng2-smart-row\" [className]=\"rowClassFunction(row)\" [ngClass]=\"{selected: row.isSelected}\">\n  <td *ngIf=\"isMultiSelectVisible\" class=\"ng2-smart-actions ng2-smart-action-multiple-select\" (click)=\"multipleSelectRow.emit(row)\">\n    <input type=\"checkbox\" class=\"form-control\" [ngModel]=\"row.isSelected\">\n  </td>\n  <td *ngIf=\"!row.isInEditing && showActionColumnLeft\" class=\"ng2-smart-actions\">\n    <ng2-st-tbody-custom [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n\n    <ng2-st-tbody-edit-delete [grid]=\"grid\"\n                              [deleteConfirm]=\"deleteConfirm\"\n                              [editConfirm]=\"editConfirm\"\n                              (edit)=\"edit.emit(row)\"\n                              (delete)=\"delete.emit(row)\"\n                              (editRowSelect)=\"editRowSelect.emit($event)\"\n                              [row]=\"row\"\n                              [source]=\"source\">\n    </ng2-st-tbody-edit-delete>\n  </td>\n   <td *ngIf=\"row.isInEditing && showActionColumnLeft\"  class=\"ng2-smart-actions\">\n    <ng2-st-tbody-create-cancel *ngIf=\"showUpdateCancel\" [grid]=\"grid\" [row]=\"row\" [editConfirm]=\"editConfirm\"></ng2-st-tbody-create-cancel>\n    <ng2-st-tbody-custom *ngIf=\"showCustomDuringEdit\" [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n  </td>\n  <td *ngFor=\"let cell of row.cells\">\n    <ng2-smart-table-cell [cell]=\"cell\"\n                          [grid]=\"grid\"\n                          [row]=\"row\"\n                          [isNew]=\"false\"\n                          [mode]=\"mode\"\n                          [editConfirm]=\"editConfirm\"\n                          [inputClass]=\"editInputClass\"\n                          [isInEditing]=\"row.isInEditing\"\n                          (completed)=\"completed.emit($event)\">\n    </ng2-smart-table-cell>\n  </td>\n\n  <td *ngIf=\"row.isInEditing && showActionColumnRight\"  class=\"ng2-smart-actions\">\n    <ng2-st-tbody-create-cancel [grid]=\"grid\" [row]=\"row\" [editConfirm]=\"editConfirm\"></ng2-st-tbody-create-cancel>\n  </td>\n\n  <td *ngIf=\"!row.isInEditing && showActionColumnRight\" class=\"ng2-smart-actions\">\n    <ng2-st-tbody-custom [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n\n    <ng2-st-tbody-edit-delete [grid]=\"grid\"\n                              [deleteConfirm]=\"deleteConfirm\"\n                              [editConfirm]=\"editConfirm\"\n                              [row]=\"row\"\n                              [source]=\"source\"\n                              (edit)=\"edit.emit(row)\"\n                              (delete)=\"delete.emit(row)\"\n                              (editRowSelect)=\"editRowSelect.emit($event)\">\n    </ng2-st-tbody-edit-delete>\n  </td>\n</tr>\n\n<tr *ngIf=\"grid.getRows().length == 0\">\n  <td [attr.colspan]=\"grid.getColumns().length + (isActionAdd || isActionEdit || isActionDelete)\">\n    {{ noDataMessage }}\n  </td>\n</tr>\n"
+module.exports = "<tr *ngFor=\"let row of grid.getRows()\" (click)=\"userSelectRow.emit(row)\" (mouseover)=\"rowHover.emit(row)\" class=\"ng2-smart-row\" [className]=\"rowClassFunction(row)\" [ngClass]=\"{selected: row.isSelected}\">\n  <td *ngIf=\"isMultiSelectVisible\" class=\"ng2-smart-actions ng2-smart-action-multiple-select\" (click)=\"multipleSelectRow.emit(row)\">\n    <input type=\"checkbox\" class=\"form-control\" [ngModel]=\"row.isSelected\">\n  </td>\n  <td *ngIf=\"!row.isInEditing && showActionColumnLeft\" class=\"ng2-smart-actions\">\n    <ng2-st-tbody-custom [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n\n    <ng2-st-tbody-edit-delete [grid]=\"grid\"\n                              [deleteConfirm]=\"deleteConfirm\"\n                              [editConfirm]=\"editConfirm\"\n                              (edit)=\"edit.emit(row)\"\n                              (delete)=\"delete.emit(row)\"\n                              (editRowSelect)=\"editRowSelect.emit($event)\"\n                              [row]=\"row\"\n                              [source]=\"source\">\n    </ng2-st-tbody-edit-delete>\n  </td>\n   <td *ngIf=\"row.isInEditing && showActionColumnLeft\"  class=\"ng2-smart-actions\">\n    <ng2-st-tbody-create-cancel *ngIf=\"showUpdateCancel\" [grid]=\"grid\" [row]=\"row\" [editConfirm]=\"editConfirm\"></ng2-st-tbody-create-cancel>\n    <ng2-st-tbody-custom *ngIf=\"showCustomDuringEdit\" [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n  </td>\n  <td *ngFor=\"let cell of row.cells\">\n    <ng2-smart-table-cell [cell]=\"cell\"\n                          [grid]=\"grid\"\n                          [row]=\"row\"\n                          [isNew]=\"false\"\n                          [mode]=\"mode\"\n                          [editConfirm]=\"editConfirm\"\n                          [inputClass]=\"editInputClass\"\n                          [isInEditing]=\"row.isInEditing\"\n                          (completed)=\"completed.emit($event)\"\n                          (changed)=\"changed.emit($event)\">\n    </ng2-smart-table-cell>\n  </td>\n\n  <td *ngIf=\"row.isInEditing && showActionColumnRight\"  class=\"ng2-smart-actions\">\n    <ng2-st-tbody-create-cancel [grid]=\"grid\" [row]=\"row\" [editConfirm]=\"editConfirm\"></ng2-st-tbody-create-cancel>\n  </td>\n\n  <td *ngIf=\"!row.isInEditing && showActionColumnRight\" class=\"ng2-smart-actions\">\n    <ng2-st-tbody-custom [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n\n    <ng2-st-tbody-edit-delete [grid]=\"grid\"\n                              [deleteConfirm]=\"deleteConfirm\"\n                              [editConfirm]=\"editConfirm\"\n                              [row]=\"row\"\n                              [source]=\"source\"\n                              (edit)=\"edit.emit(row)\"\n                              (delete)=\"delete.emit(row)\"\n                              (editRowSelect)=\"editRowSelect.emit($event)\">\n    </ng2-st-tbody-edit-delete>\n  </td>\n</tr>\n\n<tr *ngIf=\"grid.getRows().length == 0\">\n  <td [attr.colspan]=\"grid.getColumns().length + (isActionAdd || isActionEdit || isActionDelete)\">\n    {{ noDataMessage }}\n  </td>\n</tr>\n"
 
 /***/ }),
 
@@ -2616,6 +2648,7 @@ let Ng2SmartTableTbodyComponent = class Ng2SmartTableTbodyComponent {
         this.editRowSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.multipleSelectRow = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.rowHover = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
+        this.changed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
     }
     ngOnChanges() {
         this.isMultiSelectVisible = this.grid.isMultiSelectVisible();
@@ -2695,6 +2728,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
     __metadata("design:type", Object)
 ], Ng2SmartTableTbodyComponent.prototype, "rowHover", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
+    __metadata("design:type", Object)
+], Ng2SmartTableTbodyComponent.prototype, "changed", void 0);
 Ng2SmartTableTbodyComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Component */])({
         selector: '[ng2-st-tbody]',
@@ -4940,7 +4977,7 @@ function getDeepFromObject(object = {}, name, defaultValue) {
 /***/ "../../../../../src/ng2-smart-table/ng2-smart-table.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table [id]=\"tableId\" [ngClass]=\"tableClass\">\n\n  <thead ng2-st-thead *ngIf=\"!isHideHeader || !isHideSubHeader\"\n                      [grid]=\"grid\"\n                      [isAllSelected]=\"isAllSelected\"\n                      [source]=\"source\"\n                      [createConfirm]=\"createConfirm\"\n                      (create)=\"create.emit($event)\"\n                      (selectAllRows)=\"onSelectAllRows($event)\"\n                      (sort)=\"sort($event)\"\n                      (filter)=\"filter($event)\"\n                      (completed)=\"completed.emit($event)\"\n                      (custom)=\"custom.emit($event)\">\n  </thead>\n\n  <tbody ng2-st-tbody [grid]=\"grid\"\n                      [source]=\"source\"\n                      [deleteConfirm]=\"deleteConfirm\"\n                      [editConfirm]=\"editConfirm\"\n                      [rowClassFunction]=\"rowClassFunction\"\n                      (edit)=\"edit.emit($event)\"\n                      (delete)=\"delete.emit($event)\"\n                      (custom)=\"custom.emit($event)\"\n                      (userSelectRow)=\"onUserSelectRow($event)\"\n                      (editRowSelect)=\"editRowSelect($event)\"\n                      (multipleSelectRow)=\"multipleSelectRow($event)\"\n                      (rowHover)=\"onRowHover($event)\"\n                      (completed)=\"completed.emit($event)\">\n  </tbody>\n\n</table>\n\n<ng2-smart-table-pager *ngIf=\"isPagerDisplay\"\n                        [source]=\"source\"\n                        (changePage)=\"changePage($event)\">\n</ng2-smart-table-pager>\n"
+module.exports = "<table [id]=\"tableId\" [ngClass]=\"tableClass\">\n\n  <thead ng2-st-thead *ngIf=\"!isHideHeader || !isHideSubHeader\"\n                      [grid]=\"grid\"\n                      [isAllSelected]=\"isAllSelected\"\n                      [source]=\"source\"\n                      [createConfirm]=\"createConfirm\"\n                      (create)=\"create.emit($event)\"\n                      (selectAllRows)=\"onSelectAllRows($event)\"\n                      (sort)=\"sort($event)\"\n                      (filter)=\"filter($event)\"\n                      (completed)=\"completed.emit($event)\"\n                      (custom)=\"custom.emit($event)\">\n  </thead>\n\n  <tbody ng2-st-tbody [grid]=\"grid\"\n                      [source]=\"source\"\n                      [deleteConfirm]=\"deleteConfirm\"\n                      [editConfirm]=\"editConfirm\"\n                      [rowClassFunction]=\"rowClassFunction\"\n                      (edit)=\"edit.emit($event)\"\n                      (delete)=\"delete.emit($event)\"\n                      (custom)=\"custom.emit($event)\"\n                      (userSelectRow)=\"onUserSelectRow($event)\"\n                      (editRowSelect)=\"editRowSelect($event)\"\n                      (multipleSelectRow)=\"multipleSelectRow($event)\"\n                      (rowHover)=\"onRowHover($event)\"\n                      (completed)=\"completed.emit($event)\"\n                      (changed)=\"changed.emit($event)\">\n  </tbody>\n\n</table>\n\n<ng2-smart-table-pager *ngIf=\"isPagerDisplay\"\n                        [source]=\"source\"\n                        (changePage)=\"changePage($event)\">\n</ng2-smart-table-pager>\n"
 
 /***/ }),
 
@@ -5000,6 +5037,7 @@ let Ng2SmartTableComponent = class Ng2SmartTableComponent {
         this.createConfirm = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.rowHover = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.completed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
+        this.changed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.defaultSettings = {
             mode: 'inline',
             selectMode: 'single',
@@ -5205,6 +5243,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
     __metadata("design:type", Object)
 ], Ng2SmartTableComponent.prototype, "completed", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
+    __metadata("design:type", Object)
+], Ng2SmartTableComponent.prototype, "changed", void 0);
 Ng2SmartTableComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Component */])({
         selector: 'ng2-smart-table',
