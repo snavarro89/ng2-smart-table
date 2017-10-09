@@ -19,6 +19,7 @@
                       [editConfirm]="editConfirm"
                       [rowClassFunction]="rowClassFunction"
                       [cellClassFunction]="cellClassFunction"
+                      (save)="save.emit($event)"
                       (edit)="edit.emit($event)"
                       (delete)="delete.emit($event)"
                       (custom)="custom.emit($event)"

@@ -8,8 +8,9 @@ import { Ng2SmartTableComponent } from '../../../../ng2-smart-table/ng2-smart-ta
                      [settings]="settings"
                      [source]="data"
                      (completed)="onCompleted($event)"
-                     (changed)="onChange($event)">
-                     <!--(custom)="onCustom($event)">-->
+                     (changed)="onChange($event)"
+                     (save)="onSave($event)">
+      <!--(custom)="onCustom($event)">-->
 
     </ng2-smart-table>
   `,
@@ -31,10 +32,14 @@ export class BasicExampleDataComponent {
     console.log( event );
   }
 
-/*  onCustom( event: any ) {
+  onSave( event: any ) {
     console.log( event );
-    event.data[event.action.name] = event.selectedItem;
-  }*/
+  }
+
+  /*  onCustom( event: any ) {
+      console.log( event );
+      event.data[event.action.name] = event.selectedItem;
+    }*/
 
   completerSet = [
     { name: 'John', username: 'john', email: 'josh@example.com', test: 'test' },
@@ -46,7 +51,7 @@ export class BasicExampleDataComponent {
   ];
 
   settings = {
-    cellClassFunction: (cell) => {
+    cellClassFunction: ( cell ) => {
       if ( cell.getColumn().id === 'name' ) {
         return 'name-column';
       } else {
