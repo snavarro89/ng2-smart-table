@@ -71,8 +71,7 @@ export class BasicExampleDataComponent {
       edit: true,
       'delete': true,
       /*showCustomDuringEdit: true,
-      showUpdateCancel: false,
-      showCustomInForm: true,
+      showCustomDuringView: false,
       custom: [
         {
           name: 'custom',
