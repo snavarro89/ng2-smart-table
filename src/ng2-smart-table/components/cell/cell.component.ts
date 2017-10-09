@@ -31,12 +31,17 @@ export class CellComponent {
   @Output() completed = new EventEmitter<any>();
   @Output() edited = new EventEmitter<any>();
   @Output() changed = new EventEmitter<any>();
+  @Output() save = new EventEmitter<any>();
 
   onEdited( event: any ) {
     if ( this.isNew ) {
       this.grid.create( this.grid.getNewRow(), this.createConfirm );
     } else {
-      this.grid.save( this.row, this.editConfirm );
+      if ( event.key === 'Enter' && this.grid.getSetting( 'mode' ) === 'external' ) {
+        this.save.emit( this.row );
+      } else {
+        this.grid.save( this.row, this.editConfirm );
+      }
     }
   }
 }

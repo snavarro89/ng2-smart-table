@@ -10,6 +10,7 @@ import { Ng2SmartTableComponent } from '../../../../ng2-smart-table/ng2-smart-ta
                      (completed)="onCompleted($event)"
                      (changed)="onChange($event)"
                      (save)="onSave($event)">
+                     <!--(edit)="onEdit($event)">-->
       <!--(custom)="onCustom($event)">-->
 
     </ng2-smart-table>
@@ -36,6 +37,12 @@ export class BasicExampleDataComponent {
     console.log( event );
   }
 
+  /*onEdit( row: any ) {
+    console.log( row );
+    this.basicTable.grid.edit( row );
+
+  }*/
+
   /*  onCustom( event: any ) {
       console.log( event );
       event.data[event.action.name] = event.selectedItem;
@@ -58,6 +65,7 @@ export class BasicExampleDataComponent {
         return 'other-column';
       }
     },
+    // mode: 'external',
     actions: {
       add: true,
       edit: true,
@@ -104,11 +112,11 @@ export class BasicExampleDataComponent {
       email: {
         title: 'Email',
       },
-      test: {
+     /* test: {
         title: 'test column',
         editable: false,
         type: 'html',
-      },
+      },*/
     },
   };
 

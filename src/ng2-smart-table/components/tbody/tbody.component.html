@@ -36,7 +36,8 @@
                           [inputClass]="editInputClass"
                           [isInEditing]="row.isInEditing"
                           (completed)="completed.emit($event)"
-                          (changed)="changed.emit($event)">
+                          (changed)="changed.emit($event)"
+                          (save)="save.emit($event)">
     </ng2-smart-table-cell>
   </td>
 
