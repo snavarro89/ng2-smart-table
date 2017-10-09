@@ -20,7 +20,11 @@
                                 [row]="row"
                                 [editConfirm]="editConfirm"
                                 (save)="save.emit($event)"></ng2-st-tbody-create-cancel>
-    <ng2-st-tbody-custom *ngIf="showCustomDuringEdit" [grid]="grid" (custom)="custom.emit($event)" [row]="row" [source]="source"></ng2-st-tbody-custom>
+    <ng2-st-tbody-custom *ngIf="(showCustomDuringEdit && row.isInEditing) || (showCustomDuringView && !row.isInEditing)"
+                         [grid]="grid"
+                         [row]="row"
+                         [source]="source"
+                         (custom)="custom.emit($event)"></ng2-st-tbody-custom>
   </td>
   <td *ngFor="let cell of row.cells" [className]="cellClassFunction(cell)">
     <ng2-smart-table-cell [cell]="cell"

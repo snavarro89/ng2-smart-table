@@ -53,6 +53,7 @@ export class Ng2SmartTableComponent implements OnChanges {
       position: 'left', // left|right
       showUpdateCancel: true,
       showCustomDuringEdit: false,
+      showCustomDuringView: true,
       showCustomInForm: false,
     },
     filter: {

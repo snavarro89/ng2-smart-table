@@ -43,6 +43,7 @@ export class Ng2SmartTableTbodyComponent {
   noDataMessage: boolean;
   showUpdateCancel: boolean;
   showCustomDuringEdit: boolean;
+  showCustomDuringView: boolean;
 
   ngOnChanges() {
     this.isMultiSelectVisible = this.grid.isMultiSelectVisible();
@@ -56,5 +57,6 @@ export class Ng2SmartTableTbodyComponent {
     this.noDataMessage = this.grid.getSetting( 'noDataMessage' );
     this.showUpdateCancel = this.grid.getSetting( 'actions.showUpdateCancel' );
     this.showCustomDuringEdit = this.grid.getSetting( 'actions.showCustomDuringEdit' );
+    this.showCustomDuringView = this.grid.getSetting( 'actions.showCustomDuringView' );
   }
 }
