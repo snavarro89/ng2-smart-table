@@ -11,17 +11,19 @@ import { Grid } from '../../../lib/grid';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div *ngFor="let action of grid.getSetting('actions.custom')" [ngSwitch]="action.type">
-      <div *ngSwitchCase="'select'"
-           class="ng2-smart-action ng2-smart-action-custom-custom">
-        <select [(ngModel)]="selectedItem[action.name]" required (change)="onSelect(action)">
-          <option *ngFor="let item of action.optionItems" [ngValue]="item.value">{{item.description}}</option>
-        </select>
+      <div *ngIf="checkShowFunction(action)">
+        <div *ngSwitchCase="'select'"
+             class="ng2-smart-action ng2-smart-action-custom-custom">
+          <select [(ngModel)]="selectedItem[action.name]" required (change)="onSelect(action)">
+            <option *ngFor="let item of action.optionItems" [ngValue]="item.value">{{item.description}}</option>
+          </select>
+        </div>
+        <a *ngSwitchDefault
+           [innerHTML]="action.title"
+           class="ng2-smart-action ng2-smart-action-custom-custom"
+           href="#"
+           (click)="onCustom(action, $event)"></a>
       </div>
-      <a *ngSwitchDefault
-         [innerHTML]="action.title"
-         class="ng2-smart-action ng2-smart-action-custom-custom"
-         href="#"
-         (click)="onCustom(action, $event)"></a>
     </div>
   `,
 } )
@@ -66,6 +68,14 @@ export class TbodyCustomComponent implements AfterContentInit {
       data: this.row.getData(),
       source: this.source,
     } );
+  }
+
+  checkShowFunction( action: any ) {
+    if ( action.showFunction && typeof action.showFunction === 'function' ) {
+      return action.showFunction( this.row );
+    } else {
+      return true;
+    }
   }
 
 }

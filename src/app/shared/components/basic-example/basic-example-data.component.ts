@@ -10,7 +10,7 @@ import { Ng2SmartTableComponent } from '../../../../ng2-smart-table/ng2-smart-ta
                      (completed)="onCompleted($event)"
                      (changed)="onChange($event)"
                      (save)="onSave($event)">
-                     <!--(edit)="onEdit($event)">-->
+      <!--(edit)="onEdit($event)">-->
       <!--(custom)="onCustom($event)">-->
 
     </ng2-smart-table>
@@ -70,12 +70,15 @@ export class BasicExampleDataComponent {
       add: true,
       edit: true,
       'delete': true,
-      /*showCustomDuringEdit: true,
-      showCustomDuringView: false,
+      showCustomDuringEdit: true,
+      showCustomDuringView: true,
       custom: [
         {
           name: 'custom',
           title: 'custom action',
+          showFunction: ( row ) => {
+            return row.getData().id === 1;
+          },
           optionItems: [
             { value: 1, description: '1' },
             { value: 2, description: '2' },
@@ -83,7 +86,7 @@ export class BasicExampleDataComponent {
           type: 'select',
           defaultSelection: { value: 1, description: '1' },
         },
-      ],*/
+      ],
     },
     columns: {
       id: {
@@ -111,11 +114,11 @@ export class BasicExampleDataComponent {
       email: {
         title: 'Email',
       },
-     /* test: {
-        title: 'test column',
-        editable: false,
-        type: 'html',
-      },*/
+      /* test: {
+         title: 'test column',
+         editable: false,
+         type: 'html',
+       },*/
     },
   };
 
