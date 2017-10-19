@@ -20,6 +20,7 @@ export class Column {
   isEditableFunction: Function;
   filterFunction: Function;
   onComponentInitFunction: Function;
+  inputFormatFunction: Function;
 
   constructor(public id: string, protected settings: any, protected dataSet: DataSet) {
     this.process();
@@ -35,6 +36,10 @@ export class Column {
 
   getValuePrepareFunction(): Function {
     return this.valuePrepareFunction;
+  }
+
+  getInputFormatFunction(): Function {
+    return this.inputFormatFunction;
   }
 
   getIsEditableFunction(): Function {
@@ -79,6 +84,7 @@ export class Column {
     this.isEditableFunction = this.settings['isEditableFunction'];
     this.filterFunction = this.settings['filterFunction'];
     this.onComponentInitFunction = this.settings['onComponentInitFunction'];
+    this.inputFormatFunction = this.settings['inputFormatFunction'];
   }
 
   prepareType(): string {

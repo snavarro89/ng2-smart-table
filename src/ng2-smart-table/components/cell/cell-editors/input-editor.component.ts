@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 
 import { DefaultEditor } from './default-editor';
 
@@ -15,7 +15,8 @@ import { DefaultEditor } from './default-editor';
            (click)="onClick.emit($event)"
            (keydown.enter)="onEdited.emit($event)"
            (keydown.esc)="onStopEditing.emit()"
-           (change)="onChange.emit($event)">
+           (change)="onChange.emit($event)"
+           (keyup)="onKeyup($event)">
     <!-- just use regular view logic when cell is not editable-->
     <div *ngIf="!cell.isEditable()" [ngSwitch]="cell.getColumn().type">
       <custom-view-component *ngSwitchCase="'custom'" [cell]="cell"></custom-view-component>
@@ -24,11 +25,23 @@ import { DefaultEditor } from './default-editor';
     </div>
   `,
 } )
-export class InputEditorComponent extends DefaultEditor {
+export class InputEditorComponent extends DefaultEditor implements AfterViewInit {
+  ngAfterViewInit(): void {
+    this.formatFunction = this.cell.getColumn().getInputFormatFunction();
+  }
 
   @Output() onChange = new EventEmitter<any>();
 
+  formatFunction: Function;
+
   constructor() {
     super();
+
+  }
+
+  onKeyup( event: any ) {
+    if ( this.formatFunction ) {
+      this.cell.setValue(this.formatFunction(event.currentTarget.value));
+    }
   }
 }

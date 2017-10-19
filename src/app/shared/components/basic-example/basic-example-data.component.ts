@@ -91,6 +91,9 @@ export class BasicExampleDataComponent {
     columns: {
       id: {
         title: 'ID',
+        /*inputFormatFunction: ( input: string ) => {
+          return `$${input}`;
+        },*/
       },
       name: {
         title: 'name',
