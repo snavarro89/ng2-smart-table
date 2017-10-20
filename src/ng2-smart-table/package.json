@@ -1,6 +1,6 @@
 {
   "name": "ng2-smart-table-extended",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Angular Smart Table Extended Version",
   "main": "./bundles/table.umd.js",
   "module": "./index.js",

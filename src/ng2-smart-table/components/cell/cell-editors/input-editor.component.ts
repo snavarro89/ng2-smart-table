@@ -28,6 +28,9 @@ import { DefaultEditor } from './default-editor';
 export class InputEditorComponent extends DefaultEditor implements AfterViewInit {
   ngAfterViewInit(): void {
     this.formatFunction = this.cell.getColumn().getInputFormatFunction();
+    if ( this.formatFunction ) {
+      this.cell.setValue(this.formatFunction(this.cell.getValue()));
+    }
   }
 
   @Output() onChange = new EventEmitter<any>();
