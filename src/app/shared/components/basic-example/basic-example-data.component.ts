@@ -91,9 +91,6 @@ export class BasicExampleDataComponent {
     columns: {
       id: {
         title: 'ID',
-        /*inputFormatFunction: ( input: string ) => {
-          return `$${input}`;
-        },*/
       },
       name: {
         title: 'name',
@@ -113,6 +110,14 @@ export class BasicExampleDataComponent {
       },
       username: {
         title: 'User Name',
+        /*inputFormatFunction: ( value: string ) => {
+          value = value.replace( /[\$\%]/g, '' );
+          if ( value.length === 0 ) {
+            return value;
+          }
+
+          return `$${value}`;
+        },*/
       },
       email: {
         title: 'Email',
