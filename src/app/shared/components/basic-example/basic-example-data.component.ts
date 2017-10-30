@@ -72,7 +72,7 @@ export class BasicExampleDataComponent {
       'delete': true,
       showCustomDuringEdit: true,
       showCustomDuringView: true,
-      custom: [
+      /*custom: [
         {
           name: 'custom',
           title: 'custom action',
@@ -86,7 +86,7 @@ export class BasicExampleDataComponent {
           type: 'select',
           defaultSelection: { value: 1, description: '1' },
         },
-      ],
+      ],*/
     },
     columns: {
       id: {

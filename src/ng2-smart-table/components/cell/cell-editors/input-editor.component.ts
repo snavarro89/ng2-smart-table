@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Output } from '@angular/core';
 
 import { DefaultEditor } from './default-editor';
 
@@ -25,8 +25,8 @@ import { DefaultEditor } from './default-editor';
     </div>
   `,
 } )
-export class InputEditorComponent extends DefaultEditor implements AfterContentChecked {
-  ngAfterContentChecked(): void {
+export class InputEditorComponent extends DefaultEditor implements AfterContentInit {
+  ngAfterContentInit(): void {
     this.formatFunction = this.cell.getColumn().getInputFormatFunction();
     if ( this.formatFunction ) {
       this.cell.setValue(this.formatFunction(this.cell.getValue()));
