@@ -40,7 +40,7 @@ export class CompleterEditorComponent extends DefaultEditor implements OnInit {
 
   onEditedCompleter( data: { title: '' } ): boolean {
     this.cell.newValue = data.title;
-    this.completed.emit( { data, row: this.cell.getRow() } );
+    this.completed.emit( { data, row: this.cell } );
     return false;
   }
 }
