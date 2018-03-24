@@ -1,6 +1,6 @@
-** THIS IS A FORK FROM jkon/ng2-smart-table **
-
 I needed this fork because on the custom completed event I needed to return the cell and not the row, so that I can know which cell I did the autocomplete for.
+
+ THIS IS A FORK FROM jkon/ng2-smart-table 
 
 Extension of Akveo's component
 
