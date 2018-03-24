@@ -1,7 +1,7 @@
 {
   "name": "ng2-smart-table",
   "description": "Angular Smart Table",
-  "version": "1.0.0"
+  "version": "1.0.0",
   "author": "Joshua Kon <joshuapkon@gmail.com>",
   "homepage": "http://jkon.github.io/ng2-smart-table-extended/",
   "repository": {
