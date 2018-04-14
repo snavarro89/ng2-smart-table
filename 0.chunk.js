@@ -248,6 +248,12 @@ let AdvancedExamplesTypesComponent = class AdvancedExamplesTypesComponent {
             },
         };
     }
+    complete(event) {
+        debugger;
+        var editor;
+        editor = event.row.cells[1].getCustomObject();
+        //editor.refreshData(data2)
+    }
 };
 AdvancedExamplesTypesComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Component */])({
