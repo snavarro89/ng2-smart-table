@@ -45,7 +45,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host /deep/ .name-column {\n  border-left: solid;\n  border-right: solid; }\n", "", {"version":3,"sources":["/Users/joshua/ripsaw/ng2-smart-table/src/app/app.component.scss"],"names":[],"mappings":"AACA;EAGM,mBAAkB;EAClB,oBAAmB,EACpB","file":"app.component.scss","sourcesContent":["\n:host {\n  /deep/ {\n    .name-column {\n      border-left: solid;\n      border-right: solid;\n    }\n  }\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ":host /deep/ {\n  /*.name-column {\n      border-left: solid;\n      border-right: solid;\n    }*/ }\n", "", {"version":3,"sources":["/Users/samuelnavarro/Downloads/ng2-smart-table-master/src/app/app.component.scss"],"names":[],"mappings":"AACA;EAEI;;;OAGG,EACJ","file":"app.component.scss","sourcesContent":["\n:host {\n  /deep/ {\n    /*.name-column {\n      border-left: solid;\n      border-right: solid;\n    }*/\n  }\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -253,6 +253,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 let BasicExampleDataComponent = class BasicExampleDataComponent {
     constructor() {
+        /*onEdit( row: any ) {
+          console.log( row );
+          this.basicTable.grid.edit( row );
+      
+        }*/
         /*  onCustom( event: any ) {
             console.log( event );
             event.data[event.action.name] = event.selectedItem;
@@ -274,10 +279,13 @@ let BasicExampleDataComponent = class BasicExampleDataComponent {
                     return 'other-column';
                 }
             },
+            // mode: 'external',
             actions: {
                 add: true,
                 edit: true,
                 'delete': true,
+                showCustomDuringEdit: true,
+                showCustomDuringView: true,
             },
             columns: {
                 id: {
@@ -304,11 +312,6 @@ let BasicExampleDataComponent = class BasicExampleDataComponent {
                 },
                 email: {
                     title: 'Email',
-                },
-                test: {
-                    title: 'test column',
-                    editable: false,
-                    type: 'html',
                 },
             },
         };
@@ -396,6 +399,9 @@ let BasicExampleDataComponent = class BasicExampleDataComponent {
     onChange(event) {
         console.log(event);
     }
+    onSave(event) {
+        console.log(event);
+    }
 };
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1__ng2_smart_table_ng2_smart_table_component__["a" /* Ng2SmartTableComponent */]),
@@ -409,8 +415,10 @@ BasicExampleDataComponent = __decorate([
                      [settings]="settings"
                      [source]="data"
                      (completed)="onCompleted($event)"
-                     (changed)="onChange($event)">
-                     <!--(custom)="onCustom($event)">-->
+                     (changed)="onChange($event)"
+                     (save)="onSave($event)">
+      <!--(edit)="onEdit($event)">-->
+      <!--(custom)="onCustom($event)">-->
 
     </ng2-smart-table>
   `,
@@ -1043,11 +1051,19 @@ let CompleterEditorComponent = class CompleterEditorComponent extends __WEBPACK_
             const config = this.cell.getColumn().getConfig().completer;
             config.dataService = this.completerService.local(config.data, config.searchFields, config.titleField);
             config.dataService.descriptionField(config.descriptionField);
+            this.cell.setCustomObject(this);
+        }
+    }
+    refreshData(data) {
+        if (this.cell.getColumn().editor && this.cell.getColumn().editor.type === 'completer') {
+            const config = this.cell.getColumn().getConfig().completer;
+            config.dataService = this.completerService.local(data, config.searchFields, config.titleField);
+            config.dataService.descriptionField(config.descriptionField);
         }
     }
     onEditedCompleter(data) {
         this.cell.newValue = data.title;
-        this.completed.emit({ data, row: this.cell.getRow() });
+        this.completed.emit({ data, row: this.cell.getRow(), cell: this });
         return false;
     }
 };
@@ -1141,7 +1157,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host input,\n:host textarea {\n  width: 100%;\n  line-height: normal;\n  padding: .375em .75em; }\n", "", {"version":3,"sources":["/Users/joshua/ripsaw/ng2-smart-table/src/ng2-smart-table/components/cell/cell-editors/editor.component.scss"],"names":[],"mappings":"AAAA;;EAGI,YAAW;EACX,oBAAmB;EACnB,sBAAqB,EACtB","file":"editor.component.scss","sourcesContent":[":host {\n  input,\n  textarea {\n    width: 100%;\n    line-height: normal;\n    padding: .375em .75em;\n  }\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ":host input,\n:host textarea {\n  width: 100%;\n  line-height: normal;\n  padding: .375em .75em; }\n", "", {"version":3,"sources":["/Users/samuelnavarro/Downloads/ng2-smart-table-master/src/ng2-smart-table/components/cell/cell-editors/editor.component.scss"],"names":[],"mappings":"AAAA;;EAGI,YAAW;EACX,oBAAmB;EACnB,sBAAqB,EACtB","file":"editor.component.scss","sourcesContent":[":host {\n  input,\n  textarea {\n    width: 100%;\n    line-height: normal;\n    padding: .375em .75em;\n  }\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -1174,6 +1190,17 @@ let InputEditorComponent = class InputEditorComponent extends __WEBPACK_IMPORTED
         super();
         this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
     }
+    ngAfterContentInit() {
+        this.formatFunction = this.cell.getColumn().getInputFormatFunction();
+        if (this.formatFunction) {
+            this.cell.setValue(this.formatFunction(this.cell.getValue()));
+        }
+    }
+    onKeyup(event) {
+        if (this.formatFunction) {
+            this.cell.setValue(this.formatFunction(event.currentTarget.value));
+        }
+    }
 };
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
@@ -1193,7 +1220,8 @@ InputEditorComponent = __decorate([
            (click)="onClick.emit($event)"
            (keydown.enter)="onEdited.emit($event)"
            (keydown.esc)="onStopEditing.emit()"
-           (change)="onChange.emit($event)">
+           (change)="onChange.emit($event)"
+           (keyup)="onKeyup($event)">
     <!-- just use regular view logic when cell is not editable-->
     <div *ngIf="!cell.isEditable()" [ngSwitch]="cell.getColumn().type">
       <custom-view-component *ngSwitchCase="'custom'" [cell]="cell"></custom-view-component>
@@ -1460,13 +1488,19 @@ let CellComponent = class CellComponent {
         this.completed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.edited = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.changed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
+        this.save = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
     }
     onEdited(event) {
         if (this.isNew) {
             this.grid.create(this.grid.getNewRow(), this.createConfirm);
         }
         else {
-            this.grid.save(this.row, this.editConfirm);
+            if (event.key === 'Enter' && this.grid.getSetting('mode') === 'external') {
+                this.save.emit(this.row);
+            }
+            else {
+                this.grid.save(this.row, this.editConfirm);
+            }
         }
     }
 };
@@ -1518,6 +1552,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
     __metadata("design:type", Object)
 ], CellComponent.prototype, "changed", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
+    __metadata("design:type", Object)
+], CellComponent.prototype, "save", void 0);
 CellComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Component */])({
         selector: 'ng2-smart-table-cell',
@@ -1945,7 +1983,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host .ng2-smart-filter /deep/ input,\n:host .ng2-smart-filter /deep/ select {\n  width: 100%;\n  line-height: normal;\n  padding: .375em .75em;\n  font-weight: normal; }\n\n:host .ng2-smart-filter /deep/ input[type=\"search\"] {\n  box-sizing: inherit; }\n\n:host .ng2-smart-filter /deep/ .completer-dropdown-holder {\n  font-weight: normal; }\n\n:host .ng2-smart-filter /deep/ a {\n  font-weight: normal; }\n", "", {"version":3,"sources":["/Users/joshua/ripsaw/ng2-smart-table/src/ng2-smart-table/components/filter/filter.component.scss"],"names":[],"mappings":"AAAA;;EAKQ,YAAW;EACX,oBAAmB;EACnB,sBAAqB;EACrB,oBAAmB,EACpB;;AATP;EAWQ,oBAAmB,EACpB;;AAZP;EAcQ,oBAAmB,EACpB;;AAfP;EAiBQ,oBAAmB,EACpB","file":"filter.component.scss","sourcesContent":[":host {\n  .ng2-smart-filter {\n    /deep/ {\n      input,\n      select {\n        width: 100%;\n        line-height: normal;\n        padding: .375em .75em;\n        font-weight: normal;\n      }\n      input[type=\"search\"] {\n        box-sizing: inherit;\n      }\n      .completer-dropdown-holder {\n        font-weight: normal;\n      }\n      a {\n        font-weight: normal;\n      }\n    }\n  }\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ":host .ng2-smart-filter /deep/ input,\n:host .ng2-smart-filter /deep/ select {\n  width: 100%;\n  line-height: normal;\n  padding: .375em .75em;\n  font-weight: normal; }\n\n:host .ng2-smart-filter /deep/ input[type=\"search\"] {\n  box-sizing: inherit; }\n\n:host .ng2-smart-filter /deep/ .completer-dropdown-holder {\n  font-weight: normal; }\n\n:host .ng2-smart-filter /deep/ a {\n  font-weight: normal; }\n", "", {"version":3,"sources":["/Users/samuelnavarro/Downloads/ng2-smart-table-master/src/ng2-smart-table/components/filter/filter.component.scss"],"names":[],"mappings":"AAAA;;EAKQ,YAAW;EACX,oBAAmB;EACnB,sBAAqB;EACrB,oBAAmB,EACpB;;AATP;EAWQ,oBAAmB,EACpB;;AAZP;EAcQ,oBAAmB,EACpB;;AAfP;EAiBQ,oBAAmB,EACpB","file":"filter.component.scss","sourcesContent":[":host {\n  .ng2-smart-filter {\n    /deep/ {\n      input,\n      select {\n        width: 100%;\n        line-height: normal;\n        padding: .375em .75em;\n        font-weight: normal;\n      }\n      input[type=\"search\"] {\n        box-sizing: inherit;\n      }\n      .completer-dropdown-holder {\n        font-weight: normal;\n      }\n      a {\n        font-weight: normal;\n      }\n    }\n  }\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -2134,7 +2172,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".ng2-smart-pagination {\n  display: -webkit-inline-box;\n  display: -ms-inline-flexbox;\n  display: inline-flex;\n  font-size: .875em;\n  padding: 0; }\n  .ng2-smart-pagination .sr-only {\n    position: absolute;\n    width: 1px;\n    height: 1px;\n    padding: 0;\n    margin: -1px;\n    overflow: hidden;\n    clip: rect(0, 0, 0, 0);\n    border: 0; }\n  .ng2-smart-pagination .ng2-smart-page-item {\n    display: inline; }\n", "", {"version":3,"sources":["/Users/joshua/ripsaw/ng2-smart-table/src/ng2-smart-table/components/pager/pager.component.scss"],"names":[],"mappings":"AAAA;EACE,4BAAoB;EAApB,4BAAoB;EAApB,qBAAoB;EACpB,kBAAiB;EACjB,WAAU,EAgBX;EAnBD;IAMI,mBAAkB;IAClB,WAAU;IACV,YAAW;IACX,WAAU;IACV,aAAY;IACZ,iBAAgB;IAChB,uBAAmB;IACnB,UAAS,EACV;EAdH;IAiBI,gBAAe,EAChB","file":"pager.component.scss","sourcesContent":[".ng2-smart-pagination {\n  display: inline-flex;\n  font-size: .875em;\n  padding: 0;\n\n  .sr-only {\n    position: absolute;\n    width: 1px;\n    height: 1px;\n    padding: 0;\n    margin: -1px;\n    overflow: hidden;\n    clip: rect(0,0,0,0);\n    border: 0;\n  }\n\n  .ng2-smart-page-item {\n    display: inline;\n  }\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ".ng2-smart-pagination {\n  display: -ms-inline-flexbox;\n  display: inline-flex;\n  font-size: .875em;\n  padding: 0; }\n  .ng2-smart-pagination .sr-only {\n    position: absolute;\n    width: 1px;\n    height: 1px;\n    padding: 0;\n    margin: -1px;\n    overflow: hidden;\n    clip: rect(0, 0, 0, 0);\n    border: 0; }\n  .ng2-smart-pagination .ng2-smart-page-item {\n    display: inline; }\n", "", {"version":3,"sources":["/Users/samuelnavarro/Downloads/ng2-smart-table-master/src/ng2-smart-table/components/pager/pager.component.scss"],"names":[],"mappings":"AAAA;EACE,4BAAoB;EAApB,qBAAoB;EACpB,kBAAiB;EACjB,WAAU,EAgBX;EAnBD;IAMI,mBAAkB;IAClB,WAAU;IACV,YAAW;IACX,WAAU;IACV,aAAY;IACZ,iBAAgB;IAChB,uBAAmB;IACnB,UAAS,EACV;EAdH;IAiBI,gBAAe,EAChB","file":"pager.component.scss","sourcesContent":[".ng2-smart-pagination {\n  display: inline-flex;\n  font-size: .875em;\n  padding: 0;\n\n  .sr-only {\n    position: absolute;\n    width: 1px;\n    height: 1px;\n    padding: 0;\n    margin: -1px;\n    overflow: hidden;\n    clip: rect(0,0,0,0);\n    border: 0;\n  }\n\n  .ng2-smart-page-item {\n    display: inline;\n  }\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -2343,9 +2381,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 let TbodyCreateCancelComponent = class TbodyCreateCancelComponent {
+    constructor() {
+        this.save = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
+    }
     onSave(event) {
         event.preventDefault();
         event.stopPropagation();
+        this.save.emit(this.row);
         this.grid.save(this.row, this.editConfirm);
     }
     onCancelEdit(event) {
@@ -2370,6 +2412,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]) === "function" && _c || Object)
 ], TbodyCreateCancelComponent.prototype, "editConfirm", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
+    __metadata("design:type", Object)
+], TbodyCreateCancelComponent.prototype, "save", void 0);
 TbodyCreateCancelComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Component */])({
         selector: 'ng2-st-tbody-create-cancel',
@@ -2442,6 +2488,14 @@ let TbodyCustomComponent = class TbodyCustomComponent {
             source: this.source,
         });
     }
+    checkShowFunction(action) {
+        if (action.showFunction && typeof action.showFunction === 'function') {
+            return action.showFunction(this.row);
+        }
+        else {
+            return true;
+        }
+    }
 };
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
@@ -2465,17 +2519,19 @@ TbodyCustomComponent = __decorate([
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* ChangeDetectionStrategy */].OnPush,
         template: `
     <div *ngFor="let action of grid.getSetting('actions.custom')" [ngSwitch]="action.type">
-      <div *ngSwitchCase="'select'"
-           class="ng2-smart-action ng2-smart-action-custom-custom">
-        <select [(ngModel)]="selectedItem[action.name]" required (change)="onSelect(action)">
-          <option *ngFor="let item of action.optionItems" [ngValue]="item.value">{{item.description}}</option>
-        </select>
+      <div *ngIf="checkShowFunction(action)">
+        <div *ngSwitchCase="'select'"
+             class="ng2-smart-action ng2-smart-action-custom-custom">
+          <select [(ngModel)]="selectedItem[action.name]" required (change)="onSelect(action)">
+            <option *ngFor="let item of action.optionItems" [ngValue]="item.value">{{item.description}}</option>
+          </select>
+        </div>
+        <a *ngSwitchDefault
+           [innerHTML]="action.title"
+           class="ng2-smart-action ng2-smart-action-custom-custom"
+           href="#"
+           (click)="onCustom(action, $event)"></a>
       </div>
-      <a *ngSwitchDefault
-         [innerHTML]="action.title"
-         class="ng2-smart-action ng2-smart-action-custom-custom"
-         href="#"
-         (click)="onCustom(action, $event)"></a>
     </div>
   `,
     })
@@ -2601,7 +2657,7 @@ var _a, _b, _c, _d, _e;
 /***/ "../../../../../src/ng2-smart-table/components/tbody/tbody.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<tr *ngFor=\"let row of grid.getRows()\" (click)=\"userSelectRow.emit(row)\" (mouseover)=\"rowHover.emit(row)\" class=\"ng2-smart-row\" [className]=\"rowClassFunction(row)\" [ngClass]=\"{selected: row.isSelected}\">\n  <td *ngIf=\"isMultiSelectVisible\" class=\"ng2-smart-actions ng2-smart-action-multiple-select\" (click)=\"multipleSelectRow.emit(row)\">\n    <input type=\"checkbox\" class=\"form-control\" [ngModel]=\"row.isSelected\">\n  </td>\n  <td *ngIf=\"!row.isInEditing && showActionColumnLeft\" class=\"ng2-smart-actions\">\n    <ng2-st-tbody-custom [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n\n    <ng2-st-tbody-edit-delete [grid]=\"grid\"\n                              [deleteConfirm]=\"deleteConfirm\"\n                              [editConfirm]=\"editConfirm\"\n                              (edit)=\"edit.emit(row)\"\n                              (delete)=\"delete.emit(row)\"\n                              (editRowSelect)=\"editRowSelect.emit($event)\"\n                              [row]=\"row\"\n                              [source]=\"source\">\n    </ng2-st-tbody-edit-delete>\n  </td>\n   <td *ngIf=\"row.isInEditing && showActionColumnLeft\"  class=\"ng2-smart-actions\">\n    <ng2-st-tbody-create-cancel *ngIf=\"showUpdateCancel\" [grid]=\"grid\" [row]=\"row\" [editConfirm]=\"editConfirm\"></ng2-st-tbody-create-cancel>\n    <ng2-st-tbody-custom *ngIf=\"showCustomDuringEdit\" [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n  </td>\n  <td *ngFor=\"let cell of row.cells\" [className]=\"cellClassFunction(cell)\">\n    <ng2-smart-table-cell [cell]=\"cell\"\n                          [grid]=\"grid\"\n                          [row]=\"row\"\n                          [isNew]=\"false\"\n                          [mode]=\"mode\"\n                          [editConfirm]=\"editConfirm\"\n                          [inputClass]=\"editInputClass\"\n                          [isInEditing]=\"row.isInEditing\"\n                          (completed)=\"completed.emit($event)\"\n                          (changed)=\"changed.emit($event)\">\n    </ng2-smart-table-cell>\n  </td>\n\n  <td *ngIf=\"row.isInEditing && showActionColumnRight\"  class=\"ng2-smart-actions\">\n    <ng2-st-tbody-create-cancel [grid]=\"grid\" [row]=\"row\" [editConfirm]=\"editConfirm\"></ng2-st-tbody-create-cancel>\n  </td>\n\n  <td *ngIf=\"!row.isInEditing && showActionColumnRight\" class=\"ng2-smart-actions\">\n    <ng2-st-tbody-custom [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n\n    <ng2-st-tbody-edit-delete [grid]=\"grid\"\n                              [deleteConfirm]=\"deleteConfirm\"\n                              [editConfirm]=\"editConfirm\"\n                              [row]=\"row\"\n                              [source]=\"source\"\n                              (edit)=\"edit.emit(row)\"\n                              (delete)=\"delete.emit(row)\"\n                              (editRowSelect)=\"editRowSelect.emit($event)\">\n    </ng2-st-tbody-edit-delete>\n  </td>\n</tr>\n\n<tr *ngIf=\"grid.getRows().length == 0\">\n  <td [attr.colspan]=\"grid.getColumns().length + (isActionAdd || isActionEdit || isActionDelete)\">\n    {{ noDataMessage }}\n  </td>\n</tr>\n"
+module.exports = "<tr *ngFor=\"let row of grid.getRows()\" (click)=\"userSelectRow.emit(row)\" (mouseover)=\"rowHover.emit(row)\" class=\"ng2-smart-row\" [className]=\"rowClassFunction(row)\" [ngClass]=\"{selected: row.isSelected}\">\n  <td *ngIf=\"isMultiSelectVisible\" class=\"ng2-smart-actions ng2-smart-action-multiple-select\" (click)=\"multipleSelectRow.emit(row)\">\n    <input type=\"checkbox\" class=\"form-control\" [ngModel]=\"row.isSelected\">\n  </td>\n  <td *ngIf=\"!row.isInEditing && showActionColumnLeft\" class=\"ng2-smart-actions\">\n    <ng2-st-tbody-custom *ngIf=\"showCustomDuringView\" [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n\n    <ng2-st-tbody-edit-delete [grid]=\"grid\"\n                              [deleteConfirm]=\"deleteConfirm\"\n                              [editConfirm]=\"editConfirm\"\n                              (edit)=\"edit.emit(row)\"\n                              (delete)=\"delete.emit(row)\"\n                              (editRowSelect)=\"editRowSelect.emit($event)\"\n                              [row]=\"row\"\n                              [source]=\"source\">\n    </ng2-st-tbody-edit-delete>\n  </td>\n   <td *ngIf=\"row.isInEditing && showActionColumnLeft\"  class=\"ng2-smart-actions\">\n    <ng2-st-tbody-create-cancel *ngIf=\"showUpdateCancel\" [grid]=\"grid\"\n                                [row]=\"row\"\n                                [editConfirm]=\"editConfirm\"\n                                (save)=\"save.emit($event)\"></ng2-st-tbody-create-cancel>\n    <ng2-st-tbody-custom *ngIf=\"showCustomDuringEdit\"\n                         [grid]=\"grid\"\n                         [row]=\"row\"\n                         [source]=\"source\"\n                         (custom)=\"custom.emit($event)\"></ng2-st-tbody-custom>\n  </td>\n  <td *ngFor=\"let cell of row.cells\" [className]=\"cellClassFunction(cell)\">\n    <ng2-smart-table-cell [cell]=\"cell\"\n                          [grid]=\"grid\"\n                          [row]=\"row\"\n                          [isNew]=\"false\"\n                          [mode]=\"mode\"\n                          [editConfirm]=\"editConfirm\"\n                          [inputClass]=\"editInputClass\"\n                          [isInEditing]=\"row.isInEditing\"\n                          (completed)=\"completed.emit($event)\"\n                          (changed)=\"changed.emit($event)\"\n                          (save)=\"save.emit($event)\">\n    </ng2-smart-table-cell>\n  </td>\n\n  <td *ngIf=\"row.isInEditing && showActionColumnRight\"  class=\"ng2-smart-actions\">\n    <ng2-st-tbody-create-cancel [grid]=\"grid\" [row]=\"row\" [editConfirm]=\"editConfirm\"></ng2-st-tbody-create-cancel>\n  </td>\n\n  <td *ngIf=\"!row.isInEditing && showActionColumnRight\" class=\"ng2-smart-actions\">\n    <ng2-st-tbody-custom [grid]=\"grid\" (custom)=\"custom.emit($event)\" [row]=\"row\" [source]=\"source\"></ng2-st-tbody-custom>\n\n    <ng2-st-tbody-edit-delete [grid]=\"grid\"\n                              [deleteConfirm]=\"deleteConfirm\"\n                              [editConfirm]=\"editConfirm\"\n                              [row]=\"row\"\n                              [source]=\"source\"\n                              (edit)=\"edit.emit(row)\"\n                              (delete)=\"delete.emit(row)\"\n                              (editRowSelect)=\"editRowSelect.emit($event)\">\n    </ng2-st-tbody-edit-delete>\n  </td>\n</tr>\n\n<tr *ngIf=\"grid.getRows().length == 0\">\n  <td [attr.colspan]=\"grid.getColumns().length + (isActionAdd || isActionEdit || isActionDelete)\">\n    {{ noDataMessage }}\n  </td>\n</tr>\n"
 
 /***/ }),
 
@@ -2613,7 +2669,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host .ng2-smart-row.selected {\n  background: rgba(0, 0, 0, 0.05); }\n\n:host .ng2-smart-row .ng2-smart-actions.ng2-smart-action-multiple-select {\n  text-align: center; }\n", "", {"version":3,"sources":["/Users/joshua/ripsaw/ng2-smart-table/src/ng2-smart-table/components/tbody/tbody.component.scss"],"names":[],"mappings":"AAAA;EAGM,gCAA+B,EAChC;;AAJL;EAOQ,mBAAkB,EACnB","file":"tbody.component.scss","sourcesContent":[":host {\n  .ng2-smart-row {\n    &.selected {\n      background: rgba(0, 0, 0, 0.05);\n    }\n    .ng2-smart-actions {\n      &.ng2-smart-action-multiple-select {\n        text-align: center;\n      }\n    }\n  }\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ":host .ng2-smart-row.selected {\n  background: rgba(0, 0, 0, 0.05); }\n\n:host .ng2-smart-row .ng2-smart-actions.ng2-smart-action-multiple-select {\n  text-align: center; }\n", "", {"version":3,"sources":["/Users/samuelnavarro/Downloads/ng2-smart-table-master/src/ng2-smart-table/components/tbody/tbody.component.scss"],"names":[],"mappings":"AAAA;EAGM,gCAA+B,EAChC;;AAJL;EAOQ,mBAAkB,EACnB","file":"tbody.component.scss","sourcesContent":[":host {\n  .ng2-smart-row {\n    &.selected {\n      background: rgba(0, 0, 0, 0.05);\n    }\n    .ng2-smart-actions {\n      &.ng2-smart-action-multiple-select {\n        text-align: center;\n      }\n    }\n  }\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -2670,6 +2726,7 @@ let Ng2SmartTableTbodyComponent = class Ng2SmartTableTbodyComponent {
         this.noDataMessage = this.grid.getSetting('noDataMessage');
         this.showUpdateCancel = this.grid.getSetting('actions.showUpdateCancel');
         this.showCustomDuringEdit = this.grid.getSetting('actions.showCustomDuringEdit');
+        this.showCustomDuringView = this.grid.getSetting('actions.showCustomDuringView');
     }
 };
 __decorate([
@@ -3208,7 +3265,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "a.sort.asc, a.sort.desc {\n  font-weight: bold; }\n  a.sort.asc::after, a.sort.desc::after {\n    content: '';\n    display: inline-block;\n    width: 0;\n    height: 0;\n    border-bottom: 4px solid rgba(0, 0, 0, 0.3);\n    border-top: 4px solid transparent;\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    margin-bottom: 2px; }\n\na.sort.desc::after {\n  -webkit-transform: rotate(-180deg);\n  transform: rotate(-180deg);\n  margin-bottom: -2px; }\n", "", {"version":3,"sources":["/Users/joshua/ripsaw/ng2-smart-table/src/ng2-smart-table/components/thead/cells/title/title.component.scss"],"names":[],"mappings":"AAAA;EAGI,kBAAiB,EAalB;EAhBH;IAMM,YAAW;IACX,sBAAqB;IACrB,SAAQ;IACR,UAAS;IACT,4CAA2C;IAC3C,kCAAiC;IACjC,mCAAkC;IAClC,oCAAmC;IACnC,mBAAkB,EACnB;;AAfL;EAmBI,mCAAkC;EAC1B,2BAA0B;EAClC,oBAAmB,EACpB","file":"title.component.scss","sourcesContent":["a.sort {\n\n  &.asc, &.desc {\n    font-weight: bold;\n\n    &::after {\n      content: '';\n      display: inline-block;\n      width: 0;\n      height: 0;\n      border-bottom: 4px solid rgba(0, 0, 0, 0.3);\n      border-top: 4px solid transparent;\n      border-left: 4px solid transparent;\n      border-right: 4px solid transparent;\n      margin-bottom: 2px;\n    }\n  }\n\n  &.desc::after {\n    -webkit-transform: rotate(-180deg);\n            transform: rotate(-180deg);\n    margin-bottom: -2px;\n  }\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, "a.sort.asc, a.sort.desc {\n  font-weight: bold; }\n  a.sort.asc::after, a.sort.desc::after {\n    content: '';\n    display: inline-block;\n    width: 0;\n    height: 0;\n    border-bottom: 4px solid rgba(0, 0, 0, 0.3);\n    border-top: 4px solid transparent;\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    margin-bottom: 2px; }\n\na.sort.desc::after {\n  transform: rotate(-180deg);\n  margin-bottom: -2px; }\n", "", {"version":3,"sources":["/Users/samuelnavarro/Downloads/ng2-smart-table-master/src/ng2-smart-table/components/thead/cells/title/title.component.scss"],"names":[],"mappings":"AAAA;EAGI,kBAAiB,EAalB;EAhBH;IAMM,YAAW;IACX,sBAAqB;IACrB,SAAQ;IACR,UAAS;IACT,4CAA2C;IAC3C,kCAAiC;IACjC,mCAAkC;IAClC,oCAAmC;IACnC,mBAAkB,EACnB;;AAfL;EAoBY,2BAA0B;EAClC,oBAAmB,EACpB","file":"title.component.scss","sourcesContent":["a.sort {\n\n  &.asc, &.desc {\n    font-weight: bold;\n\n    &::after {\n      content: '';\n      display: inline-block;\n      width: 0;\n      height: 0;\n      border-bottom: 4px solid rgba(0, 0, 0, 0.3);\n      border-top: 4px solid transparent;\n      border-left: 4px solid transparent;\n      border-right: 4px solid transparent;\n      margin-bottom: 2px;\n    }\n  }\n\n  &.desc::after {\n    -webkit-transform: rotate(-180deg);\n            transform: rotate(-180deg);\n    margin-bottom: -2px;\n  }\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -3786,6 +3843,12 @@ class Cell {
     getRow() {
         return this.row;
     }
+    getCustomObject() {
+        return this.customObject;
+    }
+    setCustomObject(obj) {
+        this.customObject = obj;
+    }
     getValue() {
         const valid = this.column.getValuePrepareFunction() instanceof Function;
         const prepare = valid ? this.column.getValuePrepareFunction() : Cell.PREPARE;
@@ -3852,6 +3915,9 @@ class Column {
     getValuePrepareFunction() {
         return this.valuePrepareFunction;
     }
+    getInputFormatFunction() {
+        return this.inputFormatFunction;
+    }
     getIsEditableFunction() {
         return this.isEditableFunction;
     }
@@ -3887,6 +3953,7 @@ class Column {
         this.isEditableFunction = this.settings['isEditableFunction'];
         this.filterFunction = this.settings['filterFunction'];
         this.onComponentInitFunction = this.settings['onComponentInitFunction'];
+        this.inputFormatFunction = this.settings['inputFormatFunction'];
     }
     prepareType() {
         return this.settings['type'] || this.determineType();
@@ -4989,7 +5056,7 @@ function getDeepFromObject(object = {}, name, defaultValue) {
 /***/ "../../../../../src/ng2-smart-table/ng2-smart-table.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table [id]=\"tableId\" [ngClass]=\"tableClass\">\n\n  <thead ng2-st-thead *ngIf=\"!isHideHeader || !isHideSubHeader\"\n                      [grid]=\"grid\"\n                      [isAllSelected]=\"isAllSelected\"\n                      [source]=\"source\"\n                      [createConfirm]=\"createConfirm\"\n                      (create)=\"create.emit($event)\"\n                      (selectAllRows)=\"onSelectAllRows($event)\"\n                      (sort)=\"sort($event)\"\n                      (filter)=\"filter($event)\"\n                      (completed)=\"completed.emit($event)\"\n                      (custom)=\"custom.emit($event)\">\n  </thead>\n\n  <tbody ng2-st-tbody [grid]=\"grid\"\n                      [source]=\"source\"\n                      [deleteConfirm]=\"deleteConfirm\"\n                      [editConfirm]=\"editConfirm\"\n                      [rowClassFunction]=\"rowClassFunction\"\n                      [cellClassFunction]=\"cellClassFunction\"\n                      (edit)=\"edit.emit($event)\"\n                      (delete)=\"delete.emit($event)\"\n                      (custom)=\"custom.emit($event)\"\n                      (userSelectRow)=\"onUserSelectRow($event)\"\n                      (editRowSelect)=\"editRowSelect($event)\"\n                      (multipleSelectRow)=\"multipleSelectRow($event)\"\n                      (rowHover)=\"onRowHover($event)\"\n                      (completed)=\"completed.emit($event)\"\n                      (changed)=\"changed.emit($event)\">\n  </tbody>\n\n</table>\n\n<ng2-smart-table-pager *ngIf=\"isPagerDisplay\"\n                        [source]=\"source\"\n                        (changePage)=\"changePage($event)\">\n</ng2-smart-table-pager>\n"
+module.exports = "<table [id]=\"tableId\" [ngClass]=\"tableClass\">\n\n  <thead ng2-st-thead *ngIf=\"!isHideHeader || !isHideSubHeader\"\n                      [grid]=\"grid\"\n                      [isAllSelected]=\"isAllSelected\"\n                      [source]=\"source\"\n                      [createConfirm]=\"createConfirm\"\n                      (create)=\"create.emit($event)\"\n                      (selectAllRows)=\"onSelectAllRows($event)\"\n                      (sort)=\"sort($event)\"\n                      (filter)=\"filter($event)\"\n                      (completed)=\"completed.emit($event)\"\n                      (custom)=\"custom.emit($event)\">\n  </thead>\n\n  <tbody ng2-st-tbody [grid]=\"grid\"\n                      [source]=\"source\"\n                      [deleteConfirm]=\"deleteConfirm\"\n                      [editConfirm]=\"editConfirm\"\n                      [rowClassFunction]=\"rowClassFunction\"\n                      [cellClassFunction]=\"cellClassFunction\"\n                      (save)=\"save.emit($event)\"\n                      (edit)=\"edit.emit($event)\"\n                      (delete)=\"delete.emit($event)\"\n                      (custom)=\"custom.emit($event)\"\n                      (userSelectRow)=\"onUserSelectRow($event)\"\n                      (editRowSelect)=\"editRowSelect($event)\"\n                      (multipleSelectRow)=\"multipleSelectRow($event)\"\n                      (rowHover)=\"onRowHover($event)\"\n                      (completed)=\"completed.emit($event)\"\n                      (changed)=\"changed.emit($event)\">\n  </tbody>\n\n</table>\n\n<ng2-smart-table-pager *ngIf=\"isPagerDisplay\"\n                        [source]=\"source\"\n                        (changePage)=\"changePage($event)\">\n</ng2-smart-table-pager>\n"
 
 /***/ }),
 
@@ -5001,7 +5068,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host {\n  font-size: 1rem; }\n  :host /deep/ * {\n    box-sizing: border-box; }\n  :host /deep/ button,\n  :host /deep/ input,\n  :host /deep/ optgroup,\n  :host /deep/ select,\n  :host /deep/ textarea {\n    color: inherit;\n    font: inherit;\n    margin: 0; }\n  :host /deep/ table {\n    line-height: 1.5em;\n    border-collapse: collapse;\n    border-spacing: 0;\n    display: table;\n    width: 100%;\n    max-width: 100%;\n    overflow: auto;\n    word-break: normal;\n    word-break: keep-all; }\n    :host /deep/ table tr th {\n      font-weight: bold; }\n    :host /deep/ table tr section {\n      font-size: .75em;\n      font-weight: bold; }\n    :host /deep/ table tr td,\n    :host /deep/ table tr th {\n      font-size: .875em;\n      margin: 0;\n      padding: 0.5em 1em; }\n  :host /deep/ a {\n    color: #1e6bb8;\n    text-decoration: none; }\n    :host /deep/ a:hover {\n      text-decoration: underline; }\n", "", {"version":3,"sources":["/Users/joshua/ripsaw/ng2-smart-table/src/ng2-smart-table/ng2-smart-table.component.scss"],"names":[],"mappings":"AAAA;EACE,gBAAe,EAqDhB;EAtDD;IAKM,uBAAsB,EACvB;EANL;;;;;IAaM,eAAc;IACd,cAAa;IACb,UAAS,EACV;EAhBL;IAmBM,mBAAkB;IAClB,0BAAyB;IACzB,kBAAiB;IACjB,eAAc;IACd,YAAW;IACX,gBAAe;IACf,eAAc;IACd,mBAAkB;IAClB,qBAAoB,EAiBrB;IA5CL;MA+BU,kBAAiB,EAClB;IAhCT;MAkCU,iBAAgB;MAChB,kBAAiB,EAClB;IApCT;;MAuCU,kBAAiB;MACjB,UAAS;MACT,mBAAkB,EACnB;EA1CT;IA+CM,eAAc;IACd,sBAAqB,EAItB;IApDL;MAkDQ,2BAA0B,EAC3B","file":"ng2-smart-table.component.scss","sourcesContent":[":host {\n  font-size: 1rem;\n\n  /deep/ {\n    * {\n      box-sizing: border-box;\n    }\n\n    button,\n    input,\n    optgroup,\n    select,\n    textarea {\n      color: inherit;\n      font: inherit;\n      margin: 0;\n    }\n\n    table {\n      line-height: 1.5em;\n      border-collapse: collapse;\n      border-spacing: 0;\n      display: table;\n      width: 100%;\n      max-width: 100%;\n      overflow: auto;\n      word-break: normal;\n      word-break: keep-all;\n\n      tr {\n        th {\n          font-weight: bold;\n        }\n        section {\n          font-size: .75em;\n          font-weight: bold;\n        }\n        td,\n        th {\n          font-size: .875em;\n          margin: 0;\n          padding: 0.5em 1em;\n        }\n      }\n    }\n\n    a {\n      color: #1e6bb8;\n      text-decoration: none;\n      &:hover {\n        text-decoration: underline;\n      }\n    }\n  }\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ":host {\n  font-size: 1rem; }\n  :host /deep/ * {\n    box-sizing: border-box; }\n  :host /deep/ button,\n  :host /deep/ input,\n  :host /deep/ optgroup,\n  :host /deep/ select,\n  :host /deep/ textarea {\n    color: inherit;\n    font: inherit;\n    margin: 0; }\n  :host /deep/ table {\n    line-height: 1.5em;\n    border-collapse: collapse;\n    border-spacing: 0;\n    display: table;\n    width: 100%;\n    max-width: 100%;\n    overflow: auto;\n    word-break: normal;\n    word-break: keep-all; }\n    :host /deep/ table tr th {\n      font-weight: bold; }\n    :host /deep/ table tr section {\n      font-size: .75em;\n      font-weight: bold; }\n    :host /deep/ table tr td,\n    :host /deep/ table tr th {\n      font-size: .875em;\n      margin: 0;\n      padding: 0.5em 1em; }\n  :host /deep/ a {\n    color: #1e6bb8;\n    text-decoration: none; }\n    :host /deep/ a:hover {\n      text-decoration: underline; }\n", "", {"version":3,"sources":["/Users/samuelnavarro/Downloads/ng2-smart-table-master/src/ng2-smart-table/ng2-smart-table.component.scss"],"names":[],"mappings":"AAAA;EACE,gBAAe,EAqDhB;EAtDD;IAKM,uBAAsB,EACvB;EANL;;;;;IAaM,eAAc;IACd,cAAa;IACb,UAAS,EACV;EAhBL;IAmBM,mBAAkB;IAClB,0BAAyB;IACzB,kBAAiB;IACjB,eAAc;IACd,YAAW;IACX,gBAAe;IACf,eAAc;IACd,mBAAkB;IAClB,qBAAoB,EAiBrB;IA5CL;MA+BU,kBAAiB,EAClB;IAhCT;MAkCU,iBAAgB;MAChB,kBAAiB,EAClB;IApCT;;MAuCU,kBAAiB;MACjB,UAAS;MACT,mBAAkB,EACnB;EA1CT;IA+CM,eAAc;IACd,sBAAqB,EAItB;IApDL;MAkDQ,2BAA0B,EAC3B","file":"ng2-smart-table.component.scss","sourcesContent":[":host {\n  font-size: 1rem;\n\n  /deep/ {\n    * {\n      box-sizing: border-box;\n    }\n\n    button,\n    input,\n    optgroup,\n    select,\n    textarea {\n      color: inherit;\n      font: inherit;\n      margin: 0;\n    }\n\n    table {\n      line-height: 1.5em;\n      border-collapse: collapse;\n      border-spacing: 0;\n      display: table;\n      width: 100%;\n      max-width: 100%;\n      overflow: auto;\n      word-break: normal;\n      word-break: keep-all;\n\n      tr {\n        th {\n          font-weight: bold;\n        }\n        section {\n          font-size: .75em;\n          font-weight: bold;\n        }\n        td,\n        th {\n          font-size: .875em;\n          margin: 0;\n          padding: 0.5em 1em;\n        }\n      }\n    }\n\n    a {\n      color: #1e6bb8;\n      text-decoration: none;\n      &:hover {\n        text-decoration: underline;\n      }\n    }\n  }\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -5042,6 +5109,7 @@ let Ng2SmartTableComponent = class Ng2SmartTableComponent {
         this.userRowSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.delete = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.edit = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
+        this.save = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.create = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.custom = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
         this.deleteConfirm = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* EventEmitter */]();
@@ -5064,6 +5132,7 @@ let Ng2SmartTableComponent = class Ng2SmartTableComponent {
                 position: 'left',
                 showUpdateCancel: true,
                 showCustomDuringEdit: false,
+                showCustomDuringView: true,
                 showCustomInForm: false,
             },
             filter: {
@@ -5229,6 +5298,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
     __metadata("design:type", Object)
 ], Ng2SmartTableComponent.prototype, "edit", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
+    __metadata("design:type", Object)
+], Ng2SmartTableComponent.prototype, "save", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Output */])(),
     __metadata("design:type", Object)
