@@ -1,9 +1,9 @@
 {
-  "name": "ng2-smart-table",
+  "name": "ng2-smart-table-extended-pixelinc",
   "description": "Angular Smart Table",
-  "version": "1.0.0",
-  "author": "Joshua Kon <joshuapkon@gmail.com>",
-  "homepage": "http://jkon.github.io/ng2-smart-table-extended/",
+  "version": "1.0.9",
+  "author": "Samuel Navarro",
+  "homepage": "https://github.com/snavarro89/ng2-smart-table",
   "repository": {
     "type": "git",
     "url": "https://github.com/snavarro89/ng2-smart-table.git"
@@ -23,8 +23,8 @@
     "build:prod": "npm run build -- --prod",
     "build:prod:aot": "npm run build:prod -- --aot",
     "build:ci": "npm run build:prod && npm run build:prod:aot && npm run build:release",
-    "build:ghpages:aot": "npm run build:prod:aot -- --base-href \"https://jkon.github.io/ng2-smart-table/\" && ngh",
-    "build:ghpages": "npm run build:prod -- --base-href \"https://jkon.github.io/ng2-smart-table/\" && ngh",
+    "build:ghpages:aot": "npm run build:prod:aot -- --base-href \"https://github.com/snavarro89/ng2-smart-table/\" && ngh",
+    "build:ghpages": "npm run build:prod -- --base-href \"https://github.com/snavarro89/ng2-smart-table/\" && ngh",
     "build:release": "gulp build:release",
     "test": "ng test -sr",
     "test:coverage": "npm run clean:coverage && ng test -sr -cc",

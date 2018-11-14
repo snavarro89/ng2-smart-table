@@ -1,21 +1,21 @@
 {
-  "name": "ng2-smart-table-extended",
-  "version": "1.0.19",
+  "name": "ng2-smart-table-extended-pixelinc",
+  "version": "1.0.9",
   "description": "Angular Smart Table Extended Version",
   "main": "./bundles/table.umd.js",
   "module": "./index.js",
   "typings": "./index.d.ts",
-  "author": "Joshua Kon",
+  "author": "Samuel Navarro",
   "license": "MIT",
-  "homepage": "https://jkon.github.io/ng2-smart-table/",
+  "homepage": "https://github.com/snavarro89/ng2-smart-table/",
   "scripts": {
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jkon/ng2-smart-table.git"
+    "url": "git+https://github.com/snavarro89/ng2-smart-table.git"
   },
   "bugs": {
-    "url": "https://github.com/jkon/ng2-smart-table/issues"
+    "url": "https://github.com/snavarro89/ng2-smart-table/issues"
   },
   "keywords": [
     "angular",
