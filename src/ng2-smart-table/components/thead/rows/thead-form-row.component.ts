@@ -8,7 +8,7 @@ import { Row } from '../../../lib/data-set/row';
   template: `
       <td *ngIf=""></td>
       <td  *ngIf="showActionColumnLeft"  class="ng2-smart-actions">
-        <ng2-st-actions [grid]="grid" [row]="row" (create)="onCreate($event)" (custom)="custom.emit($event)"></ng2-st-actions>
+        <ng2-st-actions [grid]="grid"  [row]="row" [cancelConfirm]="cancelConfirm" (create)="onCreate($event)" (custom)="custom.emit($event)"></ng2-st-actions>
       </td>
       <td *ngFor="let cell of row.getCells()">
         <ng2-smart-table-cell [cell]="cell"
@@ -22,7 +22,7 @@ import { Row } from '../../../lib/data-set/row';
         </ng2-smart-table-cell>
       </td>
       <td  *ngIf="showActionColumnRight"  class="ng2-smart-actions">
-        <ng2-st-actions [grid]="grid" [row]="row" (create)="onCreate($event)" (custom)="custom.emit($event)"></ng2-st-actions>
+        <ng2-st-actions [grid]="grid" [row]="row" [cancelConfirm]="cancelConfirm" (create)="onCreate($event)" (custom)="custom.emit($event)"></ng2-st-actions>
       </td>
   `,
 })
@@ -34,6 +34,7 @@ export class TheadFormRowComponent implements OnChanges, AfterContentInit {
   @Input() grid: Grid;
   @Input() row: Row;
   @Input() createConfirm: EventEmitter<any>;
+  @Input() cancelConfirm: EventEmitter<any>;
 
   @Output() create = new EventEmitter<any>();
   @Output() completed = new EventEmitter<any>();

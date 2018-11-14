@@ -10,6 +10,7 @@ import { Column } from "../../../lib/data-set/column";
     <th *ngIf="isMultiSelectVisible"></th>
     <th ng2-st-add-button *ngIf="showActionColumnLeft"
                           [grid]="grid"
+                          [beforeAdd]="beforeAdd"
                           (create)="create.emit($event)">
     </th>
     <th *ngFor="let column of grid.getColumns()" class="ng2-smart-th {{ column.id }}">
@@ -22,7 +23,8 @@ import { Column } from "../../../lib/data-set/column";
     <th ng2-st-add-button *ngIf="showActionColumnRight"
                           [grid]="grid"
                           [source]="source"
-                          (create)="create.emit($event)">
+                          (create)="create.emit($event)"
+                          [beforeAdd]="beforeAdd">
     </th>
   `,
 })
@@ -30,6 +32,7 @@ export class TheadFitlersRowComponent implements OnChanges {
 
   @Input() grid: Grid;
   @Input() source: DataSource;
+  @Input() beforeAdd: EventEmitter<any>;
 
   @Output() create = new EventEmitter<any>();
   @Output() filter = new EventEmitter<any>();

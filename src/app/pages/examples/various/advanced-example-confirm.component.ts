@@ -145,6 +145,7 @@ export class AdvancedExampleConfirmComponent {
   }
 
   onCreateConfirm(event) {
+    debugger;
     if (window.confirm('Are you sure you want to create?')) {
       event.newData['name'] += ' + added in code';
       event.confirm.resolve(event.newData);

@@ -91,14 +91,66 @@ export class Grid {
     return this.onSelectRowSource.asObservable();
   }
 
-  edit(row: Row) {
-    row.isInEditing = true;
+  edit(row: Row, beforeEditEmitter:EventEmitter<any>) {
+    const deferred = new Deferred();
+    deferred.promise.then((newData) => {
+      row.isInEditing = true;
+    }).catch((err) => {
+      // doing nothing
+    });
+
+    beforeEditEmitter.emit({
+      source: this.source,
+      confirm: deferred,
+    });
+  }
+
+  addInline(beforeAddEmitter: EventEmitter<any>){
+    const deferred = new Deferred();
+    deferred.promise.then((newData) => {
+      this.createFormShown = true;
+    }).catch((err) => {
+      // doing nothing
+    });
+
+    beforeAddEmitter.emit({
+      source: this.source,
+      confirm: deferred,
+    });
+  }
+
+  cancelRow(row: Row, cancelEmitter: EventEmitter<any>){
+    const deferred = new Deferred();
+    deferred.promise.then((newData) => {
+      row.isInEditing = false;
+    }).catch((err) => {
+      // doing nothing
+    });
+
+    cancelEmitter.emit({
+      source: this.source,
+      confirm: deferred,
+    });
+  }
+
+  cancelAddRow(cancelEmitter: EventEmitter<any>){
+    const deferred = new Deferred();
+    deferred.promise.then((newData) => {
+      this.createFormShown = false;
+    }).catch((err) => {
+      // doing nothing
+    });
+
+    cancelEmitter.emit({
+      source: this.source,
+      confirm: deferred,
+    });
   }
 
   create(row: Row, confirmEmitter: EventEmitter<any>) {
-
     const deferred = new Deferred();
     deferred.promise.then((newData) => {
+      debugger;
       newData = newData ? newData : row.getNewData();
       if (deferred.resolve.skipAdd) {
         this.createFormShown = false;

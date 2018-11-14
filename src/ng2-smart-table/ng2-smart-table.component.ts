@@ -26,6 +26,9 @@ export class Ng2SmartTableComponent implements OnChanges {
   @Output() deleteConfirm = new EventEmitter<any>();
   @Output() editConfirm = new EventEmitter<any>();
   @Output() createConfirm = new EventEmitter<any>();
+  @Output() beforeAdd = new EventEmitter<any>();
+  @Output() beforeEdit = new EventEmitter<any>();
+  @Output() cancelConfirm = new EventEmitter<any>();
   @Output() rowHover: EventEmitter<any> = new EventEmitter<any>();
   @Output() completed = new EventEmitter<any>();
   @Output() changed = new EventEmitter<any>();

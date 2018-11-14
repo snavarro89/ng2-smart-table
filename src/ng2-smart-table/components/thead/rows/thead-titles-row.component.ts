@@ -13,12 +13,12 @@ import { Column } from "../../../lib/data-set/column";
                                    [isAllSelected]="isAllSelected"
                                    (click)="selectAllRows.emit($event)">
     </th>
-    <th ng2-st-actions-title *ngIf="showActionColumnLeft" [grid]="grid"></th>
+    <th ng2-st-actions-title *ngIf="showActionColumnLeft" [grid]="grid" [beforeAdd]="beforeAdd"></th>
     <th *ngFor="let column of grid.getColumns()" class="ng2-smart-th {{ column.id }}" [ngClass]="column.class"
       [style.width]="column.width" >
       <ng2-st-column-title [source]="source" [column]="column" (sort)="sort.emit($event)"></ng2-st-column-title>
     </th>
-    <th ng2-st-actions-title *ngIf="showActionColumnRight" [grid]="grid"></th>
+    <th ng2-st-actions-title *ngIf="showActionColumnRight" [grid]="grid" [beforeAdd]="beforeAdd"></th>
   `,
 })
 export class TheadTitlesRowComponent implements OnChanges {
@@ -26,6 +26,7 @@ export class TheadTitlesRowComponent implements OnChanges {
   @Input() grid: Grid;
   @Input() isAllSelected: boolean;
   @Input() source: DataSource;
+  @Input() beforeAdd: EventEmitter<any>;
 
   @Output() sort = new EventEmitter<any>();
   @Output() selectAllRows = new EventEmitter<any>();

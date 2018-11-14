@@ -5,18 +5,23 @@
                       [isAllSelected]="isAllSelected"
                       [source]="source"
                       [createConfirm]="createConfirm"
+                      [cancelConfirm]="cancelConfirm"
+                      [beforeAdd]="beforeAdd"
                       (create)="create.emit($event)"
                       (selectAllRows)="onSelectAllRows($event)"
                       (sort)="sort($event)"
                       (filter)="filter($event)"
                       (completed)="completed.emit($event)"
-                      (custom)="custom.emit($event)">
+                      (custom)="custom.emit($event)"
+                      >
   </thead>
 
   <tbody ng2-st-tbody [grid]="grid"
                       [source]="source"
                       [deleteConfirm]="deleteConfirm"
                       [editConfirm]="editConfirm"
+                      [beforeEdit]="beforeEdit"
+                      [cancelConfirm]="cancelConfirm"
                       [rowClassFunction]="rowClassFunction"
                       [cellClassFunction]="cellClassFunction"
                       (save)="save.emit($event)"

@@ -21,6 +21,7 @@ export class TitleComponent implements OnChanges {
 
   currentDirection = '';
   @Input() column: Column;
+
   @Input() source: DataSource;
   @Output() sort = new EventEmitter<any>();
 

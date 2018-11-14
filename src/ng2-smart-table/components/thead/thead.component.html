@@ -10,6 +10,7 @@
 <tr ng2-st-thead-filters-row *ngIf="!isHideSubHeader"
                               class="ng2-smart-filters"
                               [grid]="grid"
+                              [beforeAdd]="beforeAdd"
                               [source]="source"
                               (create)="create.emit($event)"
                               (filter)="filter.emit($event)">
@@ -18,6 +19,7 @@
 <tr ng2-st-thead-form-row *ngIf="grid.createFormShown"
                           [grid]="grid"
                           [createConfirm]="createConfirm"
+                          [cancelConfirm]="cancelConfirm"
                           (completed)="completed.emit($event)"
                           (custom)="custom.emit($event)">
 </tr>

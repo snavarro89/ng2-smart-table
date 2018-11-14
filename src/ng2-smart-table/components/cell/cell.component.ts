@@ -22,6 +22,7 @@ export class CellComponent {
   @Input() row: Row;
   @Input() editConfirm: EventEmitter<any>;
   @Input() createConfirm: EventEmitter<any>;
+  @Input() cancelConfirm: EventEmitter<any>;
   @Input() isNew: boolean;
   @Input() cell: Cell;
   @Input() inputClass: string = '';

@@ -6,7 +6,7 @@ import { LocalDataSource } from '../../../../ng2-smart-table';
   selector: 'basic-example-source',
   template: `
     <input #search class="search" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)">
-    <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>
+    <ng2-smart-table [settings]="settings" [source]="source" (cancelConfirm)="cancelConfirm($event)" (beforeEdit)="beforeEdit($event)" (beforeAdd)="beforeAdd($event)" (createConfirm)="confirm($event)"></ng2-smart-table>
   `,
 })
 export class BasicExampleSourceComponent {
@@ -29,6 +29,9 @@ export class BasicExampleSourceComponent {
         title: 'Email',
         filter: false,
       },
+    },
+    add:{
+      confirmCreate: true
     },
   };
 
@@ -105,6 +108,34 @@ export class BasicExampleSourceComponent {
 
   constructor() {
     this.source = new LocalDataSource(this.data);
+  }
+  
+  beforeAdd(event){
+    alert("beforeAdd")
+    event.confirm.resolve();
+  }
+
+  beforeEdit(event){
+    alert("beforeEdit")
+    event.confirm.resolve();
+  }
+
+  confirm(event){
+    alert("confirm")
+  }
+
+  onCreateConfirm(event) {
+    if (window.confirm('Are you sure you want to create?')) {
+      event.newData['name'] += ' + added in code';
+      event.confirm.resolve(event.newData);
+    } else {
+      event.confirm.reject();
+    }
+  }
+
+  cancelConfirm(event){
+    alert("cancel")
+    event.confirm.resolve();
   }
 
   onSearch(query: string = '') {

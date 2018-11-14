@@ -1,4 +1,4 @@
-import {Component, Input, AfterViewInit, ElementRef, OnChanges} from '@angular/core';
+import {Component, Input, AfterViewInit, ElementRef, OnChanges, EventEmitter} from '@angular/core';
 
 import { Grid } from '../../../lib/grid';
 
@@ -11,6 +11,8 @@ import { Grid } from '../../../lib/grid';
 export class ActionsTitleComponent implements AfterViewInit, OnChanges {
 
   @Input() grid: Grid;
+  @Input() beforeAdd: EventEmitter<any>;
+
 
   actionsColumnTitle: string;
 

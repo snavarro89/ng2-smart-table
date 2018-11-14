@@ -12,19 +12,26 @@ import { Row } from '../../../lib/data-set/row';
         (click)="$event.preventDefault();create.emit($event)"></a>
     <a href="#" class="ng2-smart-action ng2-smart-action-add-cancel"
         [innerHTML]="cancelButtonContent"
-        (click)="$event.preventDefault();grid.createFormShown = false;"></a>
+        (click)="onCancel($event)"></a>
   `,
 })
 export class ActionsComponent implements OnChanges {
 
   @Input() grid: Grid;
   @Input() row: Row;
+  @Input() cancelConfirm: EventEmitter<any>;
   @Output() create = new EventEmitter<any>();
   @Output() custom = new EventEmitter<any>();
+
 
   createButtonContent: string;
   cancelButtonContent: string;
   showCustomInForm: string;
+
+  onCancel(event: any){
+    event.preventDefault();
+    this.grid.cancelAddRow(this.cancelConfirm);
+  }
 
   ngOnChanges() {
     this.createButtonContent = this.grid.getSetting('add.createButtonContent');

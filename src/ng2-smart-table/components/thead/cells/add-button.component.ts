@@ -7,13 +7,15 @@ import { DataSource } from '../../../lib/data-source/data-source';
   selector: '[ng2-st-add-button]',
   template: `
     <a *ngIf="isActionAdd" href="#" class="ng2-smart-action ng2-smart-action-add-add"
-        [innerHTML]="addNewButtonContent" (click)="onAdd($event)"></a>
+        [innerHTML]="addNewButtonContent" (click)="onAdd($event)"  ></a>
   `,
+  //
 })
 export class AddButtonComponent implements AfterViewInit, OnChanges {
 
   @Input() grid: Grid;
   @Input() source: DataSource;
+  @Input() beforeAdd: EventEmitter<any>
   @Output() create = new EventEmitter<any>();
 
   isActionAdd: boolean;
@@ -39,7 +41,7 @@ export class AddButtonComponent implements AfterViewInit, OnChanges {
         source: this.source,
       });
     } else {
-      this.grid.createFormShown = true;
+      this.grid.addInline(this.beforeAdd);
     }
   }
 }

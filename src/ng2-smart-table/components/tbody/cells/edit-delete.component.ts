@@ -21,6 +21,7 @@ export class TbodyEditDeleteComponent implements OnChanges {
   @Input() source: DataSource;
   @Input() deleteConfirm: EventEmitter<any>;
   @Input() editConfirm: EventEmitter<any>;
+  @Input() beforeEdit: EventEmitter<any>;
 
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
@@ -43,7 +44,7 @@ export class TbodyEditDeleteComponent implements OnChanges {
         source: this.source,
       });
     } else {
-      this.grid.edit(this.row);
+      this.grid.edit(this.row, this.beforeEdit);
     }
   }
 
