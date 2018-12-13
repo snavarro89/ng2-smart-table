@@ -10,6 +10,7 @@ import { DefaultEditor } from './default-editor';
                    [dataService]="cell.getColumn().getConfig().completer.dataService"
                    [minSearchLength]="cell.getColumn().getConfig().completer.minSearchLength || 0"
                    [pause]="cell.getColumn().getConfig().completer.pause || 0"
+                   [overrideSuggested]="cell.getColumn().getConfig().completer.override || false"
                    [placeholder]="cell.getColumn().getConfig().completer.placeholder || cell.getValue() || 'Start typing...'"
                    (selected)="onEditedCompleter($event)">
     </ng2-completer>
