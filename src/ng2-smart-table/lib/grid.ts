@@ -150,7 +150,6 @@ export class Grid {
   create(row: Row, confirmEmitter: EventEmitter<any>) {
     const deferred = new Deferred();
     deferred.promise.then((newData) => {
-      debugger;
       newData = newData ? newData : row.getNewData();
       if (deferred.resolve.skipAdd) {
         this.createFormShown = false;
